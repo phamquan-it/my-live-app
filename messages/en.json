@@ -1,0 +1,22 @@
+{
+    "Index": {
+      "title": "Home",
+      "description": "This is the home page.",
+      "login":"Login",
+      "register":"Register"
+    },
+    "LocaleSwitcher": {
+      "switchLocale": "Switch to {locale, select, de {German} en {English} other {Unknown}}"
+    },
+    "PageLayout": {
+      "pageTitle": "next-intl"
+    },
+    "Form": {
+      "username": "Username",
+      "password": "Password",
+      "login":"Login",
+      "register":"Register",
+      "forgot":"Forgot password?",
+      "fullname":"Full name"
+    }
+  }

@@ -1,0 +1,22 @@
+{
+    "Index": {
+      "title": "Start",
+      "description": "Đây là trang chủ",
+      "login":"Đăng nhập",
+      "register":"Đăng ký"
+    },
+    "LocaleSwitcher": {
+      "switchLocale": "Zu {locale, select, vi {Vietnamese} en {Englisch} other {Unbekannt}} wechseln"
+    },
+    "PageLayout": {
+      "pageTitle": "next-intl"
+    },
+    "Form": {
+      "username": "Tên người dùng",
+      "password": "Mật khẩu",
+      "login":"Đăng nhập",
+      "register":"Đăng ký",
+      "forgot":"Quên mật khẩu?",
+      "fullname":"Họ tên"
+    }
+  }

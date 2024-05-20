@@ -3,6 +3,7 @@ const Achivements = () => {
     <>
       <div className="grid grid-cols-2">
         <div>abc</div>
+        <div></div>
       </div>
     </>
   );

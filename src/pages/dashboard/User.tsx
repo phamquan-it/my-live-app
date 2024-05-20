@@ -11,7 +11,7 @@ export default function Index() {
       .get(`/user/list?language=en&limit=${limit}&offset=${offset}`, {
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI2ZGYyNmVkMC02NWM3LTQzOTItOTJjZS01NjA3Y2MxYTA3Y2MiLCJlbWFpbCI6InBtcXVhMTIzbkBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcxNTkwNzkyNywiZXhwIjoxNzE1OTI5NTI3fQ.uvRq-aiK1Q5KqbnD1OKB2iiv6WUF_SNgUUGe7j5YG40",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI2ZGYyNmVkMC02NWM3LTQzOTItOTJjZS01NjA3Y2MxYTA3Y2MiLCJlbWFpbCI6InBtcXVhMTIzbkBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcxNjE2Nzg2NywiZXhwIjoxNzE2MTg5NDY3fQ.bnZLbWkvnTff-ekpSvG5GLbpfbf5CYV_AiVIhQBY3J0",
         },
       })
       .then((response) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   MenuOutlined,
   SettingOutlined,
@@ -74,7 +74,10 @@ const items: MenuProps["items"] = [
 
 const { Header, Sider, Content } = Layout;
 
-const ServicePage: React.FC = () => {
+interface ServicePageLayout {
+  children: ReactNode;
+}
+const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
   const [currentPage, setcurrentPage] = useState<JSX.Element>(
     <LiveYoutubeSetup platform={2} title="Live Youtube" />
   );
@@ -136,7 +139,7 @@ const ServicePage: React.FC = () => {
             overflowY: "scroll",
           }}
         >
-          {currentPage}
+          {children}
         </Content>
       </Layout>
     </Layout>

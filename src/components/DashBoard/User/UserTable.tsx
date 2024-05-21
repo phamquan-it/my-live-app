@@ -2,7 +2,7 @@ import UserData from "@/DataType/UseDataType";
 import UserType from "@/DataType/UserType";
 import { Input, Pagination, Select, Table } from "antd";
 import dayjs from "dayjs";
-import Role from "../Role";
+import Role from "../../Role";
 interface Column {
   title: string;
   dataIndex: string;
@@ -81,6 +81,7 @@ const User: React.FC<UserData> = ({ data, total, onChange }) => {
       </div>
 
       <Table
+        bordered
         dataSource={data}
         columns={columns}
         pagination={{

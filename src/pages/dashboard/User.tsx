@@ -2,47 +2,77 @@ import UserData from "@/DataType/UseDataType";
 import { useEffect, useState } from "react";
 import axiosClient from "../api/axiosClient";
 import UserType from "@/DataType/UserType";
-import UserTable from "@/components/DashBoard/UserTable";
+import UserTable from "@/components/DashBoard/User/UserTable";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { error } from "console";
+import { token } from "../Auth/token";
+import ServicePage from "@/components/PageComponents/ServicePage";
 
 export default function Index() {
-  const [users, setUsers] = useState<UserData>({ data: [], total: 0 });
-  const fetchData = (offset: number, limit: number) => {
-    axiosClient
-      .get(`/user/list?language=en&limit=${limit}&offset=${offset}`, {
+  const [userData, setUserData] = useState<UserType[]>([]);
+  const queryClient = useQueryClient();
+  const userMutation = useMutation({
+    mutationFn: () =>
+      axiosClient.get("/user/list?language=en", {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI2ZGYyNmVkMC02NWM3LTQzOTItOTJjZS01NjA3Y2MxYTA3Y2MiLCJlbWFpbCI6InBtcXVhMTIzbkBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcxNjE2Nzg2NywiZXhwIjoxNzE2MTg5NDY3fQ.bnZLbWkvnTff-ekpSvG5GLbpfbf5CYV_AiVIhQBY3J0",
+          Authorization: `Bearer ${token}`,
         },
-      })
-      .then((response) => {
-        let userdata: UserData = { data: [], total: response.data.total };
-        response.data.data.map((item: UserType) => {
-          item.key = item.id;
-          userdata.data.push(item);
-          setUsers(userdata);
-        });
-      })
-      .catch((error) => {
-        console.log("An error occur" + error);
+      }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
+    onSuccess: (data) => {
+      const results: UserType[] = [];
+      data.data.data.map((item: any) => {
+        const itemData: UserType = {
+          key: item.id,
+          id: item.id,
+          name: item.name,
+          email: item.email,
+          type: item.type,
+          ratio: item.ratio,
+          isActive: item.isActive,
+          roleId: item.roleId,
+          createdAt: item.createdAt,
+          funds: item.funds,
+          total_money: item.total_money,
+          role: {
+            id: item.role.id,
+            name: item.role.name,
+          },
+        };
+        results.push(itemData);
+        setUserData(results);
       });
-  };
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
   useEffect(() => {
-    fetchData(0, 10);
+    userMutation.mutate();
   }, []);
   return (
     <div className="container m-auto">
       <div>
-        <UserTable
-          data={users.data}
-          total={users.total}
-          onChange={(pagination, filter, sort) => {
-            fetchData(
-              pagination.current * pagination.pageSize - pagination.pageSize,
-              pagination.current * pagination.pageSize
-            );
-            console.log(users);
-          }}
-        />
+        {userMutation.isPending ? (
+          <>Loading...</>
+        ) : userMutation.isError ? (
+          <>An error occured</>
+        ) : (
+          <>ok</>
+        )}
+        <ServicePage>
+          <UserTable
+            data={userData}
+            total={42}
+            onChange={(pagination, filter, sort) => {
+              // fetchData(
+              //   pagination.current * pagination.pageSize - pagination.pageSize,
+              //   pagination.current * pagination.pageSize
+              // );
+              // console.log(users);
+            }}
+          />
+        </ServicePage>
       </div>
     </div>
   );

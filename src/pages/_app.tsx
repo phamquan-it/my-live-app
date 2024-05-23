@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import NextNProgress from "nextjs-progressbar";
 import { NextIntlClientProvider } from "next-intl";
 import ReduxProvider from "@/redux/Provider";
+import "react-toastify/dist/ReactToastify.css";
 import ReactQueryProvider from "@/react-query/ReactQueryProvider";
 
 export default function App({ Component, pageProps }: AppProps) {

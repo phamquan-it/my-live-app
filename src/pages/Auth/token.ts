@@ -1,2 +1,4 @@
-export const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOiI2ZGYyNmVkMC02NWM3LTQzOTItOTJjZS01NjA3Y2MxYTA3Y2MiLCJlbWFpbCI6InBtcXVhMTIzbkBnbWFpbC5jb20iLCJyb2xlIjoibWFuYWdlciIsImlhdCI6MTcxNjI3NTM1MCwiZXhwIjoxNzE2Mjk2OTUwfQ._8tYO2s9CS-0yUkaIuJETJNiN-r7-1SQsGPqgdYYsNQ";
+import { getCookie } from "cookies-next";
+
+export const token =getCookie("token");
 export const refeshToken=""

@@ -7,27 +7,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { error } from "console";
 import { OrderType } from "@/components/DashBoard/Order/Entity/OrderType";
 import OrderData from "@/components/DashBoard/Order/Entity/OrderData";
-import { token } from "../Auth/token";
+import { Table } from "antd";
 
 export default function Index() {
-  const [orders, setOrders] = useState<OrderData>({ data: [], total: 0 });
   const queryClient = useQueryClient();
   const userMutation = useMutation({
-    mutationFn: () =>
-      axiosClient.get("order/list?language=en", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
-    onSuccess: (data) => {
-      const results: OrderType[] = [];
-      data.data.data.map((item: OrderType) => {
-        item.key = item.id;
-        results.push(item);
-        setOrders({ data: results, total: data.data.total });
-      });
-    },
+    mutationFn: () => axiosClient.get("order/list?language=en"),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["order"] }),
     onError: (error) => {
       console.log(error);
     },
@@ -45,9 +31,85 @@ export default function Index() {
         ) : (
           <>ok</>
         )}
-        <OrderTable
-          data={orders.data}
-          total={42}
+        <Table
+          columns={[
+            {
+              title: "Id",
+              dataIndex: "id",
+              key: "id",
+            },
+            {
+              title: "Link",
+              dataIndex: "link",
+              key: "link",
+            },
+            {
+              title: "Charge",
+              dataIndex: "charge",
+              key: "charge",
+            },
+            {
+              title: "Start_count",
+              dataIndex: "start_count",
+              key: "start_count",
+            },
+            {
+              title: "initial_charge",
+              dataIndex: "initial_charge",
+              key: "initial_charge",
+            },
+            {
+              title: "quantity",
+              dataIndex: "quantity",
+              key: "quantity",
+            },
+            {
+              title: "status",
+              dataIndex: "status",
+              key: "status",
+            },
+            {
+              title: "queue",
+              dataIndex: "queue",
+              key: "queue",
+            },
+            {
+              title: "remains",
+              dataIndex: "remains",
+              key: "remains",
+            },
+            {
+              title: "currency",
+              dataIndex: "currency",
+              key: "currency",
+            },
+            {
+              title: "order_id",
+              dataIndex: "order_id",
+              key: "order_id",
+            },
+            {
+              title: "serviceId",
+              dataIndex: "serviceId",
+              key: "serviceId",
+            },
+            {
+              title: "create_date",
+              dataIndex: "create_date",
+              key: "create_date",
+            },
+            {
+              title: "updatedAt",
+              dataIndex: "updatedAt",
+              key: "updatedAt",
+            },
+            {
+              title: "service",
+              dataIndex: "service",
+              key: "service",
+            },
+          ]}
+          dataSource={userMutation.data?.data.data}
           onChange={(pagination, filter, sort) => {
             // fetchData(
             //   pagination.current * pagination.pageSize - pagination.pageSize,

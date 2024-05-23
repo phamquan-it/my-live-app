@@ -27,27 +27,42 @@ function UserTable({ onUpdateStatusUser, openModal, ...props }: Props) {
   const columns: ColumnsType<UserData> = [
     {
       dataIndex: "",
-      title: " messages('common.no.')",
+      title: "Id",
       align: "center",
       width: 100,
       render: (text, record, index) =>
         getIndex(props.pagination.pageSize, props.pagination.current, index),
     },
     {
-      title: "messages('common.name')",
+      title: "FullName",
       dataIndex: "name",
       key: "name",
       width: 300,
       render: (cell, record) => `${record.firstName} ${record.lastName}`,
     },
     {
-      title: "messages('common.email')",
+      title: "Email",
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "messages('common.role')",
-      dataIndex: "role",
+      title: "Persent reduction",
+      dataIndex: "reduction",
+      key: "reduction",
+    },
+    {
+      title: "Persent increate",
+      dataIndex: "reduction",
+      key: "reduction",
+    },
+    {
+      title: "Persent create",
+      dataIndex: "reduction",
+      key: "reduction",
+    },
+    {
+      title: "Position",
+      dataIndex: "",
       key: "role",
       align: "center",
       width: 120,
@@ -55,7 +70,7 @@ function UserTable({ onUpdateStatusUser, openModal, ...props }: Props) {
         "messages(`user.${cell.name.toLowerCase()}` as TranslationKey)",
     },
     {
-      title: "messages('common.dateCreated')",
+      title: "Create At",
       dataIndex: "createdAt",
       key: "createdAt",
       align: "center",
@@ -63,7 +78,7 @@ function UserTable({ onUpdateStatusUser, openModal, ...props }: Props) {
       render: (cell) => formattedDate(cell),
     },
     {
-      title: " messages('common.dateUpdated')",
+      title: "Update At",
       dataIndex: "updatedAt",
       key: "updatedAt",
       align: "center",
@@ -77,7 +92,7 @@ function UserTable({ onUpdateStatusUser, openModal, ...props }: Props) {
       columns.length,
       0,
       {
-        title: "messages('status.label')",
+        title: "Status",
         dataIndex: "status",
         key: "status",
         align: "center",
@@ -89,7 +104,7 @@ function UserTable({ onUpdateStatusUser, openModal, ...props }: Props) {
         ),
       },
       {
-        title: "messages('common.action')",
+        title: "Action",
         dataIndex: "action",
         key: "action",
         align: "center",

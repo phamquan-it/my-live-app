@@ -4,6 +4,11 @@ import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import Title from "antd/es/typography/Title";
 import { Ubuntu } from "next/font/google";
+import { authApi } from "@/API/authApi";
+import { setCookie } from "cookies-next";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
 const ubuntu = Ubuntu({
   weight: "400",
@@ -24,12 +29,34 @@ const LoginForm = () => {
     textAlign: "center",
     background: "#364d79",
   };
+  const router = useRouter();
+  async function onFinish(values: any) {
+    console.log(values);
+
+    await authApi
+      .login(values)
+      .then((response) => {
+        setCookie("token", response.data.token);
+        setCookie("refresh_token", response.data.refresh_token);
+        toast.success("Login success", {
+          onClose: () => {
+            router.push("/");
+          },
+        });
+      })
+      .catch((error) => {
+        console.log("An error occured");
+        console.log(error);
+        toast.error("An error occured");
+      });
+  }
   return (
     <>
       <div
         className={`w-1/2 m-auto flex items-center ${ubuntu.className}`}
         style={{ height: "100vh" }}
       >
+        <ToastContainer />
         <div className="w-full border rounded shadow">
           <div className="flex gap-5">
             <div
@@ -56,6 +83,7 @@ const LoginForm = () => {
               name="basic"
               initialValues={{ remember: true }}
               {...layout}
+              onFinish={onFinish}
             >
               <Title
                 level={3}
@@ -64,44 +92,46 @@ const LoginForm = () => {
               >
                 {t("login")}
               </Title>
-              <Form.Item
-                label={t("username")}
-                name="username"
-                rules={[
-                  { required: true, message: "Please input your username!" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+              <div className="px-2">
+                <Form.Item
+                  label={t("username")}
+                  name="email"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
 
-              <Form.Item
-                label={t("password")}
-                name="password"
-                rules={[
-                  { required: true, message: "Please input your password!" },
-                  {
-                    min: 8,
-                    message: "Password should have at least 8 characters",
-                  },
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
-              <Button
-                type="link"
-                style={{ color: "purple" }}
-                onClick={() => {
-                  // Handle forgot password
-                }}
-              >
-                {t("forgot")}
-              </Button>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  {t("login")}
-                </Button>{" "}
-                <Button htmlType="submit">{t("register")}</Button>
-              </Form.Item>
+                <Form.Item
+                  label={t("password")}
+                  name="password"
+                  rules={[
+                    { required: true, message: "Please input your password!" },
+                    {
+                      min: 5,
+                      message: "Password should have at least 5 characters",
+                    },
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+                <Button
+                  type="link"
+                  style={{ color: "purple" }}
+                  onClick={() => {
+                    // Handle forgot password
+                  }}
+                >
+                  {t("forgot")}
+                </Button>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    {t("login")}
+                  </Button>{" "}
+                  <Button htmlType="submit">{t("register")}</Button>
+                </Form.Item>
+              </div>
             </Form>
           </div>
         </div>

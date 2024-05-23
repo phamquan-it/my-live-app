@@ -6,19 +6,20 @@ interface ServiceType {
     service:{
         cancel:string
         description:string
-        id: number
-        min:string
-        max: string
         dripfeed:string
-        refill:string
+        id: number
+        initial_rate:string
         level: number,
+        max: string
+        min:string
+        refill:string
         name:string
     }
     
     type:string
     ratio:any
     rate: string
-    initial_rate:string
+   
     status:number
     providerId: number,
     provider: Provider

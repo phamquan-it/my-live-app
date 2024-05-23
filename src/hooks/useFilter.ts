@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { OnSearchType } from '@/components/ui/input/search';
 import { PAGE_SIZE } from '@/constants';
 import { CommonParams } from '@/types';
 import { useRouter } from 'next/router';
-
+import { ChangeEventHandler } from 'react';
+type OnSearchType = ChangeEventHandler<HTMLInputElement>;
 export type OnChangeFilter<DataFilterType> = (
   newValue: Partial<DataFilterType>,
   backToFirstPage?: boolean

@@ -3,7 +3,8 @@
       "title": "Start",
       "description": "Đây là trang chủ",
       "login":"Đăng nhập",
-      "register":"Đăng ký"
+      "register":"Đăng ký",
+      "gotoregister":"Đăng ký ngay"
     },
     "LocaleSwitcher": {
       "switchLocale": "Zu {locale, select, vi {Vietnamese} en {Englisch} other {Unbekannt}} wechseln"
@@ -18,5 +19,53 @@
       "register":"Đăng ký",
       "forgot":"Quên mật khẩu?",
       "fullname":"Họ tên"
+    },
+    "ErrorMessage":{
+      "notfound":"Lỗi 404, Địa chỉ trang web này không tồn tại!"
+    },
+    "Dashboard":{
+      "home":"Trang chủ",
+      "services":"Dịch vụ",
+      "contact":"Liên hệ",
+      "platform":"Nền tảng",
+      "category":"Thể loại",
+      "refund":"Hoàn tiền",
+      "order":"Đặt hàng",
+      "user":"Người dùng",
+      "userprofile":"Thông tin cá nhân",
+      "Settings":"Thiết lập"
+    },
+    "general":{
+      "fullname":"Họ tên",
+      "role":"Vai trò",
+      "no.":"STT",
+      "name":"Tên",
+      "location":"Vị trí",
+      "createat":"Ngày tạo",
+      "updateat":"Ngày cập nhật",
+      "action":"Hành động",
+      "areyousure":"Bạn có chắc không?",
+      "delete":"Xóa",
+      "service":"Dịch vụ",
+      "mailUser":"Mail người dùng",
+      "createneworder":"Tạo đơn hàng mới",
+      "updateorder":"Cập nhật thông tin đơn hàng",
+      "createnewuser":"Tạo người dùng mới",
+      "accept":"Chấp nhận",
+      "cancel":"Từ chối",
+      "searchplh":"Tìm kiếm",
+      "chooseanuser":"Chọn một người dùng",
+      "link":"Liên kết",
+      "totalmoney":"Tổng tiền",
+      "fund":"Quỹ",
+      "isactive":"Đã kích hoạt",
+      "quantity":"Số lượng",
+      "status":"Trạng thái",
+      "remains":"Còn lại"
+    },
+    "validation":{
+      "required":"không được để trống!",
+      "least8character":"cần tối thiểu 8 ký tự",
+      "info":"Thông tin"
     }
   }

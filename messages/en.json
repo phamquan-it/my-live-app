@@ -3,7 +3,8 @@
       "title": "Home",
       "description": "This is the home page.",
       "login":"Login",
-      "register":"Register"
+      "register":"Register",
+      "gotoregister":"Goto Register"
     },
     "LocaleSwitcher": {
       "switchLocale": "Switch to {locale, select, de {German} en {English} other {Unknown}}"
@@ -18,5 +19,53 @@
       "register":"Register",
       "forgot":"Forgot password?",
       "fullname":"Full name"
+    },
+    "ErrorMessage":{
+      "notfound":"404 not found!"
+    },
+    "Dashboard":{
+      "home":"Home",
+      "services":"Services",
+      "contact":"Contact",
+      "platform":"Platforms",
+      "category":"Categories",
+      "refund":"Refund",
+      "order":"Orders",
+      "user":"Users",
+      "userprofile":"User profile",
+      "Settings":"Settings"
+    },
+    "general":{
+      "fullname":"Full name",
+      "role":"Role",
+      "no.":"No .",
+      "name":"Name",
+      "location":"Location",
+      "createat":"Create At",
+      "updateat":"Update At",
+      "action":"Action",
+      "areyousure":"Are you sure?",
+      "delete":"Delete",
+      "service":"Service",
+      "mailUser":"Mail user",
+      "createneworder":"Create new order",
+      "updateorder":"Update order info",
+      "createnewuser":"Create new user",
+      "accept":"Accept",
+      "cancel":"Cancel",
+      "searchplh":"Search...",
+      "chooseanuser":"Choose an user...",
+      "link":"Link",
+      "totalmoney":"Total monney",
+      "fund":"Fund",
+      "isactive":"Is Active",
+      "quantity":"Quantity",
+      "status":"Status",
+      "remains":"Remains"
+    },
+    "validation":{
+      "required":"is required!",
+      "least8character":"least 8 character!",
+      "info":""
     }
   }

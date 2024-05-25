@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import Role from "../../Role";
 import { OrderType } from "./Entity/OrderType";
 import OrderData from "./Entity/OrderData";
+import TableAction from "../components/TableAction";
 interface Column {
   title: string;
   dataIndex: string;
@@ -84,9 +85,14 @@ const User: React.FC<OrderData> = ({ data, total, onChange }) => {
       key: "updatedAt",
     },
     {
-      title: "service",
-      dataIndex: "service",
-      key: "service",
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: () => (
+        <>
+          <TableAction />
+        </>
+      ),
     },
   ];
   return (

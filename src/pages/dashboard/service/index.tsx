@@ -12,9 +12,10 @@ import ServiceTable from "@/components/DashBoard/Service/ServiceTable";
 import { ServiceType } from "@/components/DashBoard/Service/Entities/ServiceType";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import { Button, Modal } from "antd";
+import Head from "next/head";
+import { GetStaticPropsContext } from "next";
 
 export default function Index() {
-  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [seriveData, setSeriveData] = useState<ServiceData>({
     data: [],
     total: 0,
@@ -41,31 +42,23 @@ export default function Index() {
       console.log(error);
     },
   });
+  function fetchServiceData(params: any) {
+    userMutation.mutate(params);
+  }
   useEffect(() => {
-    userMutation.mutate();
+    fetchServiceData({
+      offset: 0,
+      limit: 2,
+    });
+    console.log(userMutation);
   }, []);
   return (
     <div className="">
+      <Head>
+        <title>Service</title>
+        <link rel="icon" href="/logo.png" />
+      </Head>
       <ServicePage>
-        <Modal
-          title="create"
-          open={showCreateModal}
-          footer={null}
-          onCancel={() => {
-            setShowCreateModal(showCreateModal ? false : true);
-          }}
-        >
-          <p></p>
-        </Modal>
-        <Button
-          type="default"
-          onClick={() => {
-            setShowCreateModal(showCreateModal ? false : true);
-          }}
-        >
-          Create
-        </Button>
-
         <div>
           {userMutation.isPending ? (
             <>Loading...</>
@@ -89,4 +82,12 @@ export default function Index() {
       </ServicePage>
     </div>
   );
+}
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../../messages/${locale}.json`)).default,
+    },
+  };
 }

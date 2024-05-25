@@ -1,27 +1,20 @@
 import UserData from "@/DataType/UseDataType";
 import UserType from "@/DataType/UserType";
-import { Button, Table } from "antd";
+import { Button, Modal, Switch, Table } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
 import UpdateUser from "./UpdateModal";
+import TableAction from "../components/TableAction";
+import { useTranslations } from "next-intl";
 const User: React.FC<UserData> = ({ data, total, onChange }) => {
-  const [openUpdatePopup, setOpenUpdatePopup] = useState<boolean>(false);
-  const [userUpdateId, setUserUpdateId] = useState<string>("");
-
+  const t = useTranslations("general");
   return (
     <>
       <div className="flex">
-        <UpdateUser
-          id_user={userUpdateId}
-          openModal={openUpdatePopup}
-          onCancel={() => {
-            setOpenUpdatePopup(false);
-          }}
-          onOk={() => {
-            setOpenUpdatePopup(false);
-          }}
-        />
+        <Modal title="" open={false}>
+          adform
+        </Modal>
       </div>
 
       <Table
@@ -29,12 +22,7 @@ const User: React.FC<UserData> = ({ data, total, onChange }) => {
         dataSource={data}
         columns={[
           {
-            title: "Id",
-            dataIndex: "id",
-            key: "id",
-          },
-          {
-            title: "Name",
+            title: t("name"),
             dataIndex: "name",
             key: "name",
           },
@@ -44,38 +32,31 @@ const User: React.FC<UserData> = ({ data, total, onChange }) => {
             key: "email",
           },
           {
-            title: "Is Active",
+            title: t("isactive"),
             dataIndex: "isActive",
             key: "isActive",
+            render: (text) => (
+              <Switch defaultChecked={text == 1 ? true : false} />
+            ),
           },
           {
-            title: "RoleId",
-            dataIndex: "roleId",
-            key: "roleId",
-          },
-          {
-            title: "CreatedAt",
+            title: t("createat"),
             dataIndex: "createdAt",
             key: "createdAt",
             render: (text: string) => <>{dayjs(text).format("YYYY-MM-DD")}</>,
           },
           {
-            title: "Funds",
+            title: t("fund"),
             dataIndex: "funds",
             key: "funds",
           },
           {
-            title: "Total money",
+            title: t("totalmoney"),
             dataIndex: "total_money",
             key: "total_money",
           },
           {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-          },
-          {
-            title: "Role",
+            title: t("role"),
             dataIndex: "role",
             key: "role",
             render: (text, record: UserType) => {
@@ -87,21 +68,13 @@ const User: React.FC<UserData> = ({ data, total, onChange }) => {
             },
           },
           {
-            title: "Action",
+            title: t("action"),
             dataIndex: "id",
             key: "id",
             render: (text, record) => {
               return (
                 <>
-                  <Button
-                    type="default"
-                    onClick={() => {
-                      setUserUpdateId(record.id);
-                      setOpenUpdatePopup(true);
-                    }}
-                  >
-                    <EditOutlined />
-                  </Button>
+                  <TableAction onEdit={() => {}} onDelete={() => {}} />
                 </>
               );
             },

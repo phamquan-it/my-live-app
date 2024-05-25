@@ -5,11 +5,16 @@ import {
 } from "@ant-design/icons";
 import { Button, ConfigProvider, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const HeaderApp = () => {
+  const router = useRouter();
   const [smScreenMenu, setsmScreenMenu] = useState<string>("h-0");
   const [scrollPosition, setScrollPosition] = useState(0);
+  const t = useTranslations("Index");
+  const d = useTranslations("Dashboard");
   useEffect(() => {
     if (window.innerHeight < 400) {
     }
@@ -28,10 +33,10 @@ const HeaderApp = () => {
     };
   }, []);
   const menuItems = [
-    { label: "Home", key: "1" },
-    { label: "Platform", key: "2" },
-    { label: "Services", key: "3" },
-    { label: "Contact", key: "4" },
+    { label: d("home"), key: "1" },
+    { label: d("platform"), key: "2" },
+    { label: d("services"), key: "3" },
+    { label: d("contact"), key: "4" },
   ];
   const smMenuControl = () => {
     if (smScreenMenu == "h-44") {
@@ -55,17 +60,27 @@ const HeaderApp = () => {
         <div className="hidden sm:block">
           <Menu
             mode="horizontal"
-            style={{ width: 320 }}
+            style={{ width: 350 }}
             items={menuItems}
             defaultActiveFirst
           />
         </div>
         <div className="flex h-100 items-center">
-          <button className="btn  py-2 text-rose-500 rounded hover:bg-rose-500 hover:text-white px-3">
-            <UserOutlined /> Login
+          <button
+            className="btn  py-2 text-rose-500 rounded hover:bg-rose-500 hover:text-white px-3"
+            onClick={() => {
+              router.push("/auth/login");
+            }}
+          >
+            <UserOutlined /> {t("login")}
           </button>
-          <button className="btn shadow text-white rounded border px-2 py-2 bg-rose-500 ms-3 hover:bg-rose-400 sm:hover:last:translate-x-2">
-            Goto register <ArrowRightOutlined className="" />
+          <button
+            onClick={() => {
+              router.push("/auth/register");
+            }}
+            className="btn shadow text-white rounded border px-2 py-2 bg-rose-500 ms-3 hover:bg-rose-400 sm:hover:last:translate-x-2"
+          >
+            {t("gotoregister")} <ArrowRightOutlined className="" />
           </button>
         </div>
       </div>

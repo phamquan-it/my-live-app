@@ -1,11 +1,14 @@
 import UserData from "@/DataType/UseDataType";
 import UserType from "@/DataType/UserType";
-import { Input, Pagination, Select, Table } from "antd";
+import { Button, Input, Modal, Pagination, Select, Table } from "antd";
 import dayjs from "dayjs";
 import Role from "../../Role";
 import { ServiceType } from "./Entities/ServiceType";
 import ServiceData from "./Entities/ServiceData";
 import { text } from "stream/consumers";
+import { EditOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import UpdateForm from "./UpdateForm";
 interface Column {
   title: string;
   dataIndex: string;
@@ -18,6 +21,7 @@ const ServiceTable: React.FC<ServiceData> = ({ data, total, onChange }) => {
       title: "Id",
       dataIndex: "id",
       key: "id",
+      render: (text, record) => <>{record.service.id}</>,
     },
     {
       title: "CategoryId",
@@ -121,9 +125,37 @@ const ServiceTable: React.FC<ServiceData> = ({ data, total, onChange }) => {
       key: "rate_config",
       render: (text, record: any) => <>{record.service.rate_config}</>,
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "Action",
+      render: (text, record: any) => (
+        <Button
+          type="default"
+          onClick={() => {
+            setShowPopup(true);
+            setEditServideID(record.service.id);
+          }}
+        >
+          <EditOutlined />
+        </Button>
+      ),
+    },
   ];
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [editServideID, setEditServideID] = useState<number>(0);
   return (
     <>
+      <Modal
+        title=""
+        open={showPopup}
+        footer={null}
+        onCancel={() => setShowPopup(false)}
+      >
+        {editServideID}
+        <UpdateForm id={editServideID} />
+      </Modal>
+
       <div className="flex">
         <div className="py-3 w-1/5">
           <Input placeholder="Search..." />

@@ -1,10 +1,16 @@
 import { fundApi } from "@/API/fundApi";
+import ConfirmDelete from "@/components/DashBoard/components/ConfirmModalDelete";
+import DashBoardFilter from "@/components/DashBoard/components/DashboardFilter";
+import TableAction from "@/components/DashBoard/components/TableAction";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import axiosClient from "@/pages/api/axiosClient";
 import { EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Modal, Spin, Table } from "antd";
-import { useEffect } from "react";
+import { GetStaticPropsContext } from "next";
+import { useTranslations } from "next-intl";
+import Head from "next/head";
+import { ReactNode, useEffect, useState } from "react";
 import { text } from "stream/consumers";
 
 const Page = () => {
@@ -25,18 +31,40 @@ const Page = () => {
       offset: 0,
     });
   }, []);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalContent, setModalContent] = useState<ReactNode>(<></>);
+  const [title, setTitle] = useState<string>("");
+  const hideModal = () => {
+    setShowModal(false);
+  };
+  const t = useTranslations("general");
   return (
     <>
+      <Head>
+        <title>Refund</title>
+        <link rel="icon" href="/logo.png" />
+      </Head>
       <ServicePage>
+        <DashBoardFilter selectData={[]} search_placehoder={t("searchplh")} />
         <p>{isPending ? "Loading..." : ""}</p>
+        <Modal
+          title={title}
+          open={showModal}
+          footer={null}
+          onCancel={hideModal}
+        >
+          {modalContent}
+        </Modal>
+
         <Table
-          onChange={() => {
+          onChange={(pagination: any) => {
             console.log(data?.data.total);
 
             handleFetch({
-              keyword: "",
-              limit: 10,
-              offset: 0,
+              offset:
+                pagination.current * pagination.pageSize - pagination.pageSize,
+              limit: pagination.current * pagination.pageSize,
             });
           }}
           pagination={{
@@ -51,7 +79,7 @@ const Page = () => {
               key: "id",
             },
             {
-              title: "Mail User",
+              title: t("mailUser"),
               dataIndex: "user",
               key: "user",
               render: (text: any, record: any) => (
@@ -59,7 +87,7 @@ const Page = () => {
               ),
             },
             {
-              title: "Service",
+              title: t("service"),
               dataIndex: "service",
               key: "service",
               render: (text: any, record: any) => (
@@ -67,24 +95,24 @@ const Page = () => {
               ),
             },
             {
-              title: "CreatedAt",
+              title: t("createat"),
               dataIndex: "createdAt",
               key: "createdAt",
             },
+
             {
-              title: "OrderId",
-              dataIndex: "orderId",
-              key: "orderId",
-            },
-            {
-              title: "Action",
+              title: t("action"),
               dataIndex: "action",
               key: "action",
               render: (text, record) => (
                 <>
-                  <Button type="default">
-                    <EditOutlined />
-                  </Button>
+                  <TableAction
+                    onDelete={() => {
+                      setTitle("Are you sure?");
+                      setModalContent(<ConfirmDelete />);
+                      setShowModal(true);
+                    }}
+                  />
                 </>
               ),
             },
@@ -95,3 +123,10 @@ const Page = () => {
   );
 };
 export default Page;
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../../messages/${locale}.json`)).default,
+    },
+  };
+}

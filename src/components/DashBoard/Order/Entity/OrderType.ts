@@ -16,7 +16,7 @@ interface OrderType{
     serviceId: number,
     create_date: string,
     updatedAt: string,
-    service: Service
+    actiction: any
 }
 export type{
     OrderType

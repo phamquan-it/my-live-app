@@ -1,10 +1,16 @@
 import { fundApi } from "@/API/fundApi";
+import ConfirmDelete from "@/components/DashBoard/components/ConfirmModalDelete";
+import DashBoardFilter from "@/components/DashBoard/components/DashboardFilter";
+import TableAction from "@/components/DashBoard/components/TableAction";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import axiosClient from "@/pages/api/axiosClient";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Image, Modal, Spin, Table } from "antd";
-import { useEffect } from "react";
+import { GetStaticPropsContext } from "next";
+import { useTranslations } from "next-intl";
+import Head from "next/head";
+import { ReactNode, useEffect, useState } from "react";
 import { text } from "stream/consumers";
 
 const Page = () => {
@@ -28,10 +34,39 @@ const Page = () => {
       offset: 0,
     });
   }, []);
+  const [modalContent, setModalContent] = useState<ReactNode>(<></>);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
+  const t = useTranslations("general");
+  const d = useTranslations("Dashboard");
   return (
     <>
+      <Head>
+        <title>Category</title>
+        <link rel="icon" href="/logo.png" />
+      </Head>
       <ServicePage>
         <p>{isPending ? "Loading..." : ""}</p>
+        <Modal
+          title={title}
+          open={openModal}
+          onCancel={() => {
+            setOpenModal(false);
+          }}
+          footer={null}
+        >
+          {modalContent}
+        </Modal>
+        <DashBoardFilter
+          search_placehoder="Search..."
+          selectData={[{ children: <>123</>, key: "", value: "1" }]}
+          onSearchChange={(e) => {
+            console.log(e.target.value);
+          }}
+          onSelectChange={(value) => {
+            console.log(value);
+          }}
+        />
         <Table
           onChange={() => {
             console.log(data?.data.total);
@@ -54,7 +89,7 @@ const Page = () => {
               key: "id",
             },
             {
-              title: "Name",
+              title: t("name"),
               dataIndex: "name",
               key: "name",
               render: (text, record) => (
@@ -65,28 +100,43 @@ const Page = () => {
               ),
             },
             {
-              title: "Platform",
+              title: d("platform"),
               dataIndex: "platform",
               key: "platform",
               render: (text, record) => <>{record.platform.name}</>,
             },
             {
-              title: "DateCreated",
+              title: t("createat"),
               dataIndex: "createdAt",
               key: "createdAt",
             },
             {
-              title: "Action",
+              title: t("action"),
               dataIndex: "action",
               key: "action",
               render: (text, record) => (
                 <>
-                  <Button type="default">
-                    <EditOutlined />
-                  </Button>
-                  <Button type="default">
-                    <DeleteOutlined className="!text-rose-700" />
-                  </Button>
+                  <TableAction
+                    onEdit={() => {
+                      setTitle(`Edit`);
+                      setOpenModal(true);
+                      setModalContent(<></>);
+                    }}
+                    onDelete={() => {
+                      setTitle(t("areyousure"));
+                      setModalContent(
+                        <ConfirmDelete
+                          onAccept={() => {
+                            alert("ok");
+                          }}
+                          onCancel={() => {
+                            setOpenModal(false);
+                          }}
+                        />
+                      );
+                      setOpenModal(true);
+                    }}
+                  />
                 </>
               ),
             },
@@ -97,3 +147,10 @@ const Page = () => {
   );
 };
 export default Page;
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../../messages/${locale}.json`)).default,
+    },
+  };
+}

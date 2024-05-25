@@ -7,32 +7,38 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import { Input } from "antd";
 import Role from "@/components/Role";
+import Head from "next/head";
+import { GetStaticPropsContext } from "next";
+import { useTranslations } from "next-intl";
 export default function Index() {
   const [userData, setUserData] = useState<UserType[]>([]);
   const queryClient = useQueryClient();
   //mutation get user
   const userMutation = useMutation({
-    mutationFn: () => axiosClient.get("/user/list?language=en"),
+    mutationFn: (params) =>
+      axiosClient.get("/user/list?language=en", { params }),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
-    onSuccess: (data) => {
-      const results: UserType[] = [];
-      data.data.data.map((item: any) => {
-        item.key = item.id;
-        results.push(item);
-        setUserData(results);
-      });
-    },
     onError: (error) => {
       console.log(error);
     },
   });
   //mutation get role to combobox
-
+  function fetUser(params: any) {
+    userMutation.mutate(params);
+  }
   useEffect(() => {
-    userMutation.mutate();
+    fetUser({
+      limit: 10,
+      offset: 0,
+    });
   }, []);
+  const t = useTranslations("general");
   return (
     <div className="">
+      <Head>
+        <title>User</title>
+        <link rel="icon" href="/logo.png" />
+      </Head>
       <div>
         <ServicePage>
           {userMutation.isPending ? (
@@ -45,7 +51,7 @@ export default function Index() {
           <div className="flex">
             <div className="py-3 w-1/5">
               <Input
-                placeholder="Search..."
+                placeholder={t("searchplh")}
                 onChange={(value) => {
                   console.log(value);
                 }}
@@ -60,13 +66,15 @@ export default function Index() {
             </div>
           </div>
           <UserTable
-            data={userData}
-            total={42}
+            data={userMutation.data?.data.data}
+            total={userMutation.data?.data.total}
             onChange={(pagination, filter, sort) => {
-              // fetchData(
-              //   pagination.current * pagination.pageSize - pagination.pageSize,
-              //   pagination.current * pagination.pageSize
-              // );
+              fetUser({
+                offset:
+                  pagination.current * pagination.pageSize -
+                  pagination.pageSize,
+                limit: pagination.current * pagination.pageSize,
+              });
               // console.log(users);
             }}
           />
@@ -74,4 +82,12 @@ export default function Index() {
       </div>
     </div>
   );
+}
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../../messages/${locale}.json`)).default,
+    },
+  };
 }

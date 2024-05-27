@@ -9,7 +9,7 @@ function Page() {
         style={{ height: "100vh" }}
         className="flex items-center justify-center"
       >
-        {t("notfound")}
+        {t("notfound")}f
       </div>
     </>
   );

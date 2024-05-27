@@ -1,5 +1,0 @@
-export enum TYPE_MODAL_GENRE {
-  UPDATE = 'UPDATE_GENRE',
-  CREATE = 'CREATE_GENRE',
-  DELETE = 'DELETE',
-}

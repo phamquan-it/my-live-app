@@ -1,4 +1,5 @@
 import DashBoardTable from "@/components/DashBoard/components/DashBoardTable";
+import PlatformCreate from "@/components/DashBoard/components/Platform/Create";
 import { EditOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useState } from "react";
@@ -57,19 +58,7 @@ const Page = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   return (
     <>
-      <Button type="default"></Button>
-      <DashBoardTable
-        columns={columns}
-        dataSource={dataSource}
-        key={1}
-        modalChilren={<>this is modal</>}
-        modalOpen={showModal}
-        modalOnCancel={() => {
-          setShowModal(false);
-        }}
-      >
-        <p>123</p>
-      </DashBoardTable>
+      <PlatformCreate />
     </>
   );
 };

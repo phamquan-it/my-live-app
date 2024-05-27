@@ -18,6 +18,9 @@ import UpdateOrder from "@/components/DashBoard/Order/UpdateOrder";
 import CreateOrder from "@/components/DashBoard/Order/CreateOrder";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
+import { text } from "stream/consumers";
+import dayjs from "dayjs";
+import { useRouter } from "next/router";
 
 export default function Index() {
   const queryClient = useQueryClient();
@@ -44,7 +47,9 @@ export default function Index() {
   const hideModal = () => {
     setShowModal(false);
   };
+  const [pageIndex, setPageIndex] = useState<number>(1);
   const t = useTranslations("general");
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -84,6 +89,9 @@ export default function Index() {
             </Button>
             <Table
               onChange={(pagination: any) => {
+                console.log(pagination.current);
+
+                setPageIndex(pagination.current);
                 const offset =
                   pagination.current * pagination.pageSize -
                   pagination.pageSize;
@@ -102,6 +110,9 @@ export default function Index() {
                   title: "Id",
                   dataIndex: "id",
                   key: "id",
+                  render: (text, record, index) => (
+                    <>{pageIndex * 10 + (index + 1) - 10}</>
+                  ),
                 },
                 {
                   title: t("link"),
@@ -137,11 +148,25 @@ export default function Index() {
                   title: t("createat"),
                   dataIndex: "create_date",
                   key: "create_date",
+                  render: (text) => (
+                    <>
+                      {router.locale == "vi"
+                        ? dayjs(text).format("DD/MM/YYYY")
+                        : dayjs(text).format("YYYY/MM/DD")}
+                    </>
+                  ),
                 },
                 {
                   title: t("updateat"),
                   dataIndex: "updatedAt",
                   key: "updatedAt",
+                  render: (text) => (
+                    <>
+                      {router.locale == "vi"
+                        ? dayjs(text).format("DD/MM/YYYY")
+                        : dayjs(text).format("YYYY/MM/DD")}
+                    </>
+                  ),
                 },
                 {
                   title: t("action"),

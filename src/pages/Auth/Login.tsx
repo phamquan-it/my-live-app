@@ -53,43 +53,20 @@ const LoginForm = () => {
   return (
     <>
       <div
-        className={`w-1/2 m-auto flex items-center ${ubuntu.className}`}
+        className={`w-1/3 m-auto flex items-center ${ubuntu.className}`}
         style={{ height: "100vh" }}
       >
         <ToastContainer />
         <div className="w-full border rounded shadow">
-          <div className="flex gap-5">
-            <div
-              className="w-1/2 h-100 bg rounded justify-center"
-              style={{ backgroundColor: "purple" }}
-            >
-              <Carousel autoplay>
-                <div>
-                  <h3 style={contentStyle}>1</h3>
-                </div>
-                <div>
-                  <h3 style={contentStyle}>2</h3>
-                </div>
-                <div>
-                  <h3 style={contentStyle}>3</h3>
-                </div>
-                <div>
-                  <h3 style={contentStyle}>4</h3>
-                </div>
-              </Carousel>
-            </div>
+          <div className="px-3 py-4">
             <Form
-              className="w-1/2 py-5 pe-3"
+              className="w-full py-5 pe-3"
               name="basic"
               initialValues={{ remember: true }}
               {...layout}
               onFinish={onFinish}
             >
-              <Title
-                level={3}
-                className="text-center"
-                style={{ color: "purple" }}
-              >
+              <Title level={3} className="text-center">
                 {t("login")}
               </Title>
               <div className="px-2">

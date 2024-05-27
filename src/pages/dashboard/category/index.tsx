@@ -1,4 +1,6 @@
 import { fundApi } from "@/API/fundApi";
+import CreateNewCategory from "@/components/DashBoard/Category/CreateNewCategory";
+import UpdateCateggory from "@/components/DashBoard/Category/UpdateCategory";
 import ConfirmDelete from "@/components/DashBoard/components/ConfirmModalDelete";
 import DashBoardFilter from "@/components/DashBoard/components/DashboardFilter";
 import TableAction from "@/components/DashBoard/components/TableAction";
@@ -7,13 +9,17 @@ import axiosClient from "@/pages/api/axiosClient";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Image, Modal, Spin, Table } from "antd";
+import dayjs from "dayjs";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
 import { text } from "stream/consumers";
 
 const Page = () => {
+  const router = useRouter();
+
   const { data, isPending, isError, mutate } = useMutation({
     mutationFn: (iData) => {
       return axiosClient.get("/categories/list?language=en", {
@@ -37,8 +43,10 @@ const Page = () => {
   const [modalContent, setModalContent] = useState<ReactNode>(<></>);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
+  const [pageIndex, setPageIndex] = useState<number>(1);
   const t = useTranslations("general");
   const d = useTranslations("Dashboard");
+
   return (
     <>
       <Head>
@@ -67,15 +75,30 @@ const Page = () => {
             console.log(value);
           }}
         />
+        <div className="py-3">
+          <Button
+            type="primary"
+            onClick={() => {
+              setTitle(`Create`);
+              setOpenModal(true);
+              setModalContent(<CreateNewCategory />);
+            }}
+          >
+            Create new category
+          </Button>
+        </div>
         <Table
-          onChange={() => {
-            console.log(data?.data.total);
-
+          onChange={(pagination: any) => {
+            console.log(pagination);
+            const offset =
+              pagination.current * pagination.pageSize - pagination.pageSize;
+            const limit = pagination.current * pagination.pageSize;
             handleFetch({
               keyword: "",
-              limit: 10,
-              offset: 0,
+              limit: limit,
+              offset: offset,
             });
+            setPageIndex(pagination.current);
           }}
           pagination={{
             total: data?.data.total,
@@ -87,6 +110,9 @@ const Page = () => {
               title: "No.",
               dataIndex: "id",
               key: "id",
+              render: (text, record, index) => (
+                <>{pageIndex * 10 + (index + 1) - 10}</>
+              ),
             },
             {
               title: t("name"),
@@ -109,6 +135,13 @@ const Page = () => {
               title: t("createat"),
               dataIndex: "createdAt",
               key: "createdAt",
+              render: (text) => (
+                <>
+                  {router.locale == "vi"
+                    ? dayjs(text).format("DD/MM/YYYY")
+                    : dayjs(text).format("YYYY/MM/DD")}
+                </>
+              ),
             },
             {
               title: t("action"),
@@ -120,7 +153,7 @@ const Page = () => {
                     onEdit={() => {
                       setTitle(`Edit`);
                       setOpenModal(true);
-                      setModalContent(<></>);
+                      setModalContent(<UpdateCateggory />);
                     }}
                     onDelete={() => {
                       setTitle(t("areyousure"));

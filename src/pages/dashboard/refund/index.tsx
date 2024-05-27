@@ -1,15 +1,20 @@
 import { fundApi } from "@/API/fundApi";
+import CreateNewRefund from "@/components/DashBoard/Refund/CreateNewRefund";
+import UpdateRefund from "@/components/DashBoard/Refund/UpdateRefund";
 import ConfirmDelete from "@/components/DashBoard/components/ConfirmModalDelete";
 import DashBoardFilter from "@/components/DashBoard/components/DashboardFilter";
+import PlatformUpdate from "@/components/DashBoard/components/Platform/UpdatePlatform";
 import TableAction from "@/components/DashBoard/components/TableAction";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import axiosClient from "@/pages/api/axiosClient";
 import { EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Modal, Spin, Table } from "antd";
+import dayjs from "dayjs";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
 import { text } from "stream/consumers";
 
@@ -35,6 +40,7 @@ const Page = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode>(<></>);
   const [title, setTitle] = useState<string>("");
+  const router = useRouter();
   const hideModal = () => {
     setShowModal(false);
   };
@@ -56,7 +62,18 @@ const Page = () => {
         >
           {modalContent}
         </Modal>
-
+        <div className="py-3">
+          <Button
+            type="primary"
+            onClick={() => {
+              setTitle("Create new refund");
+              setModalContent(<CreateNewRefund />);
+              setShowModal(true);
+            }}
+          >
+            CreateNewRefund
+          </Button>
+        </div>
         <Table
           onChange={(pagination: any) => {
             console.log(data?.data.total);
@@ -98,6 +115,13 @@ const Page = () => {
               title: t("createat"),
               dataIndex: "createdAt",
               key: "createdAt",
+              render: (text) => (
+                <>
+                  {router.locale == "vi"
+                    ? dayjs(text).format("DD/MM/YYYY")
+                    : dayjs(text).format("YYYY/MM/DD")}
+                </>
+              ),
             },
 
             {
@@ -110,6 +134,11 @@ const Page = () => {
                     onDelete={() => {
                       setTitle("Are you sure?");
                       setModalContent(<ConfirmDelete />);
+                      setShowModal(true);
+                    }}
+                    onEdit={() => {
+                      setTitle("Update Refund");
+                      setModalContent(<UpdateRefund />);
                       setShowModal(true);
                     }}
                   />

@@ -1,6 +1,7 @@
 import ConfirmDelete from "@/components/DashBoard/components/ConfirmModalDelete";
 import DashBoardFilter from "@/components/DashBoard/components/DashboardFilter";
 import PlatformCreate from "@/components/DashBoard/components/Platform/Create";
+import PlatformUpdate from "@/components/DashBoard/components/Platform/UpdatePlatform";
 import TableAction from "@/components/DashBoard/components/TableAction";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import axiosClient from "@/pages/api/axiosClient";
@@ -50,6 +51,11 @@ const Page = () => {
               );
               setShowModal(true);
             }}
+            onEdit={() => {
+              setTitle("Update Platform");
+              setModalContent(<PlatformUpdate />);
+              setShowModal(true);
+            }}
           />
         );
       },
@@ -86,16 +92,18 @@ const Page = () => {
         >
           {modalContent}
         </Modal>
-        <Button
-          type="primary"
-          onClick={() => {
-            setTitle("Create Platform");
-            setModalContent(<PlatformCreate />);
-            setShowModal(true);
-          }}
-        >
-          Create
-        </Button>
+        <div className="py-3">
+          <Button
+            type="primary"
+            onClick={() => {
+              setTitle("Create Platform");
+              setModalContent(<PlatformCreate />);
+              setShowModal(true);
+            }}
+          >
+            Create new platform
+          </Button>
+        </div>
 
         <Table
           dataSource={data?.data.data}

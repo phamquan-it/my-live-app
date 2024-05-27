@@ -10,24 +10,6 @@ const CreateNewCategory = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
-  const props = {
-    name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info: any) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
   return (
     <>
       <Form
@@ -45,11 +27,15 @@ const CreateNewCategory = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Platform" name="platform">
+        <Form.Item
+          label="Platform"
+          name="platform"
+          rules={[{ required: true, message: "Please choose a platform" }]}
+        >
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="请选择"
+            placeholder="Choose a platform"
             //   onChange={onChange}
             //   onFocus={onFocus}
             //   onBlur={onBlur}
@@ -57,15 +43,6 @@ const CreateNewCategory = () => {
           >
             <Select.Option value="jack">Youtube</Select.Option>
           </Select>
-        </Form.Item>
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Upload an icon !" }]}
-        >
-          <Upload {...props}>
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-          </Upload>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">

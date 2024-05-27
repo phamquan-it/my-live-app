@@ -1,11 +1,16 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import {
+  CalendarFilled,
   CarOutlined,
+  DiffOutlined,
   FundOutlined,
+  HistoryOutlined,
   HomeFilled,
   HomeOutlined,
   LaptopOutlined,
   MenuOutlined,
+  OrderedListOutlined,
+  PlusCircleFilled,
   SettingOutlined,
   ShoppingOutlined,
   TeamOutlined,
@@ -20,8 +25,16 @@ import UserProfile from "../UserProfile";
 import TeamMember from "../TeamMember";
 import Setting from "../Setting";
 import { TbCategoryFilled } from "react-icons/tb";
-import { FaBuyNLarge } from "react-icons/fa";
+import {
+  FaBuyNLarge,
+  FaCashRegister,
+  FaListUl,
+  FaMoneyBill,
+  FaVolumeOff,
+} from "react-icons/fa";
 import { useTranslations } from "next-intl";
+import LanguageChoose from "../LocaleChoose";
+import Title from "antd/es/typography/Title";
 
 const { Header, Sider, Content } = Layout;
 
@@ -32,53 +45,89 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
   const t = useTranslations("Dashboard");
   const items_menu = [
     {
-      key: "9",
+      key: "1",
       icon: <HomeFilled />,
       label: t("home"),
       page: "/dashboard",
     },
     {
-      key: "1",
-      icon: <LaptopOutlined />,
-      label: t("platform"),
-      page: "/dashboard/platform",
+      key: "2",
+      icon: <HistoryOutlined />,
+      label: "Payment history",
+      page: "/dashboard/refund",
     },
     {
-      key: "2",
+      key: "3",
+      icon: <FaListUl />,
+      label: "Services",
+      page: "/dashboard/refund",
+    },
+    {
+      key: "4",
+      icon: <FaMoneyBill />,
+      label: "Cash flow",
+      page: "/dashboard/refund",
+    },
+    {
+      key: "5",
       icon: <TbCategoryFilled />,
       label: t("category"),
       page: "/dashboard/category",
     },
     {
-      key: "3",
+      key: "6",
       icon: <FundOutlined />,
       label: t("refund"),
       page: "/dashboard/refund",
     },
     {
+      key: "7",
+      icon: <HistoryOutlined />,
+      label: "Payment history",
+      page: "/dashboard/refund",
+    },
+    {
       key: "8",
+      icon: <CalendarFilled />,
+      label: "Cront",
+      page: "/dashboard/refund",
+    },
+    {
+      key: "9",
       icon: <FaBuyNLarge />,
       label: t("order"),
       page: "/dashboard/order",
     },
     {
-      key: "7",
+      key: "10",
       icon: <TeamOutlined />,
       label: t("user"),
       page: "/dashboard/user",
     },
     {
-      key: "4",
+      key: "11",
       icon: <UserOutlined />,
       label: t("userprofile"),
       page: "/dashboard/user/info",
     },
 
     {
-      key: "5",
+      key: "12",
       icon: <SettingOutlined />,
       label: t("Settings"),
       page: "/dashboard/settings",
+    },
+    {
+      key: "13",
+      icon: <FaVolumeOff />,
+      label: "Voucher",
+      page: "/dashboard/log",
+    },
+    {
+      key: "14",
+      icon: <DiffOutlined />,
+      label: "Log",
+      page: "/dashboard/log",
     },
   ];
   const items: MenuProps["items"] = [
@@ -116,10 +165,51 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
   }, []);
 
   return (
-    <Layout style={{ height: "100vh", backgroundColor: "transparent" }}>
-      <div className="bg-white h-screen">
-        <Sider trigger={true} collapsible collapsed={collapsed}>
+    <Layout
+      style={{ height: "100vh", backgroundColor: "transparent" }}
+      className=""
+    >
+      <div
+        className="bg-white h-screen "
+        style={{ height: "100vh", overflowY: "auto", overflowX: "hidden" }}
+      >
+        <Sider
+          trigger={true}
+          collapsible
+          collapsed={collapsed}
+          className="!py-0"
+        >
           <div className="demo-logo-vertical" />
+          <div className={`${collapsed ? "hidden" : "block"}`}>
+            <div className="px-3 py-3 pt-5 text-gray-600">
+              <Title level={3} className="!mb-0 !pb-0">
+                Pham Quan
+              </Title>
+              <p>quanqqq11@gmail.com</p>
+            </div>
+            <div className="my-2 border mx-3 rounded-md font-semibold">
+              <div className="bg-blue-100 flex justify-between p-3 ">
+                <span className="text-gray-700">Funds</span>
+                <span className="text-blue-500">$0</span>
+              </div>
+              <div className=" flex justify-between p-3">
+                <span className="text-gray-700">Inprogess</span>
+                <span className="text-blue-900">$0</span>
+              </div>
+            </div>
+            <div className="mx-3 grid gap-2">
+              <Button type="primary" icon={<PlusCircleFilled />}>
+                New order
+              </Button>
+              <Button
+                type="primary"
+                className="!bg-green-600"
+                icon={<PlusCircleFilled />}
+              >
+                Deposit
+              </Button>
+            </div>
+          </div>
           <Menu
             theme="light"
             mode="inline"
@@ -135,6 +225,11 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
             items={items_menu}
           />
         </Sider>
+        <div className="grid">
+          <Button className={`${!collapsed ? "!mx-3" : "!hidden"}`}>
+            Logout
+          </Button>
+        </div>
       </div>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
@@ -151,19 +246,20 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
             />
             <div className="w-full flex justify-between pe-10">
               <span style={{ color: "purple" }}>LiveLogo</span>
-              <span>
+              <div className="flex items-center gap-2">
+                <LanguageChoose />
                 <Dropdown menu={{ items }} placement="bottomRight" arrow>
                   <Button className="border-0 shadow-sm text-slate-500">
                     pmquan@gmail.com <UserOutlined />
                   </Button>
                 </Dropdown>
-              </span>
+              </div>
             </div>
           </div>
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
+            margin: "24px 0px 16px 10px",
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,

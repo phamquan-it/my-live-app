@@ -1,5 +1,7 @@
 import axios from "axios";
-import { token } from "../auth/token";
+import { getCookie } from "cookies-next";
+
+const token =getCookie("token");
 
 
 const axiosClient = axios.create({

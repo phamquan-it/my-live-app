@@ -166,10 +166,7 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
   }, []);
 
   return (
-    <Layout
-      style={{ height: "100vh", backgroundColor: "transparent" }}
-      className=""
-    >
+    <Layout style={{ height: "100vh" }} className="!bg-white">
       <div
         className="bg-white h-screen "
         style={{ height: "100vh", overflowY: "auto", overflowX: "hidden" }}

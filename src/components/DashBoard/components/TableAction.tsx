@@ -36,7 +36,10 @@ const TableAction: React.FC<TableActionProps> = ({
         </Button>
       </div> */}
       <div className="flex gap-1">
-        <Button onClick={onEdit} className="!bg-green-500">
+        <Button
+          onClick={onEdit}
+          className="!bg-green-500 hover:!border-green-500 hover:!shadow-none"
+        >
           <span className="text-white">
             <EditFilled />
           </span>

@@ -35,6 +35,7 @@ import {
 import { useTranslations } from "next-intl";
 import LanguageChoose from "../LocaleChoose";
 import Title from "antd/es/typography/Title";
+import { deleteCookie } from "cookies-next";
 
 const { Header, Sider, Content } = Layout;
 
@@ -59,7 +60,7 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
     {
       key: "3",
       icon: <FaListUl />,
-      label: "Services",
+      label: t("services"),
       page: "/dashboard/refund",
     },
     {
@@ -226,7 +227,13 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
           />
         </Sider>
         <div className="grid">
-          <Button className={`${!collapsed ? "!mx-3" : "!hidden"}`}>
+          <Button
+            className={`${!collapsed ? "!mx-3" : "!hidden"}`}
+            onClick={() => {
+              deleteCookie("token");
+              router.push("/login");
+            }}
+          >
             Logout
           </Button>
         </div>
@@ -248,11 +255,6 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
               <span style={{ color: "purple" }}>LiveLogo</span>
               <div className="flex items-center gap-2">
                 <LanguageChoose />
-                <Dropdown menu={{ items }} placement="bottomRight" arrow>
-                  <Button className="border-0 shadow-sm text-slate-500">
-                    pmquan@gmail.com <UserOutlined />
-                  </Button>
-                </Dropdown>
               </div>
             </div>
           </div>

@@ -9,6 +9,7 @@ import { setCookie } from "cookies-next";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const ubuntu = Ubuntu({
   weight: "400",
@@ -38,11 +39,8 @@ const LoginForm = () => {
       .then((response) => {
         setCookie("token", response.data.token);
         setCookie("refresh_token", response.data.refresh_token);
-        toast.success("Login success", {
-          onClose: () => {
-            router.push("/");
-          },
-        });
+        toast.success("Login success");
+        router.push("/dashboard");
       })
       .catch((error) => {
         console.log("An error occured");
@@ -107,6 +105,9 @@ const LoginForm = () => {
                     {t("login")}
                   </Button>{" "}
                   <Button htmlType="submit">{t("register")}</Button>
+                </Form.Item>
+                <Form.Item label="" name="">
+                  <Link href={"/"}>Goto home page</Link>
                 </Form.Item>
               </div>
             </Form>

@@ -3,11 +3,11 @@ import { ReactNode, useEffect, useState } from "react";
 
 import UserType from "@/DataType/UserType";
 import OrderTable from "@/components/DashBoard/Order/OrderTable";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { error } from "console";
 import { OrderType } from "@/components/DashBoard/Order/Entity/OrderType";
 import OrderData from "@/components/DashBoard/Order/Entity/OrderData";
-import { Button, Modal, Table } from "antd";
+import { Button, Modal, Table, TablePaginationConfig } from "antd";
 import axiosClient from "@/pages/api/axiosClient";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import TableAction from "@/components/DashBoard/components/TableAction";
@@ -22,34 +22,51 @@ import { text } from "stream/consumers";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 
+const PAGE_SIZE = 10;
+const QUERY_KEY = "/order/list";
+
 export default function Index() {
-  const queryClient = useQueryClient();
-  const { data, isPending, isError, mutate } = useMutation({
-    mutationFn: (params) =>
-      axiosClient.get("order/list?language=en", {
-        params,
+  const [pageIndex, setPageIndex] = useState(1);
+
+  const offset = (pageIndex - 1) * PAGE_SIZE;
+  const limit = pageIndex * PAGE_SIZE;
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryFn: () =>
+      axiosClient.get("/order/list?language=en", {
+        params: {
+          offset,
+          limit,
+        },
       }),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["order"] }),
+    queryKey: [QUERY_KEY, pageIndex],
+    placeholderData: (previousData) => previousData,
   });
-  const fetchOrder = (params: any) => {
-    mutate(params);
-  };
-  useEffect(() => {
-    fetchOrder({
-      limit: 10,
-      offset: 0,
-    });
-  }, []);
+  console.log("isLoading", isLoading);
+  console.log("isFetching", isFetching);
+
+  // const fetchOrder = (params: any) => {
+  //   mutate(params);
+  // };
+  // useEffect(() => {
+  //   fetchOrder({
+  //     limit: 10,
+  //     offset: 0,
+  //   });
+  // }, []);
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode>(<></>);
-  const [title, setTitle] = useState<string>("");
+  const [title, setTitle] = useState("");
   const hideModal = () => {
     setShowModal(false);
   };
-  const [pageIndex, setPageIndex] = useState<number>(1);
   const t = useTranslations("general");
   const router = useRouter();
+
+  const onChange = (pagination: TablePaginationConfig) => {
+    setPageIndex(pagination.current ?? 1);
+  };
   return (
     <>
       <Head>
@@ -59,13 +76,6 @@ export default function Index() {
       <ServicePage>
         <div className="">
           <div>
-            {isPending ? (
-              <>Loading...</>
-            ) : isError ? (
-              <>An error occured</>
-            ) : (
-              <></>
-            )}
             <DashBoardFilter selectData={[]} search_placehoder="Search..." />
             <Modal
               footer={null}
@@ -75,7 +85,7 @@ export default function Index() {
                 setShowModal(false);
               }}
             >
-              {modalContent}
+              <CreateOrder />
             </Modal>
             <Button
               onClick={() => {
@@ -88,19 +98,7 @@ export default function Index() {
               Create new order
             </Button>
             <Table
-              onChange={(pagination: any) => {
-                console.log(pagination.current);
-
-                setPageIndex(pagination.current);
-                const offset =
-                  pagination.current * pagination.pageSize -
-                  pagination.pageSize;
-                const limit = pagination.current * pagination.pageSize;
-                fetchOrder({
-                  offset: offset,
-                  limit: limit,
-                });
-              }}
+              onChange={onChange}
               pagination={{
                 pageSize: 10,
                 total: data?.data.total,
@@ -197,6 +195,7 @@ export default function Index() {
                 },
               ]}
               dataSource={data?.data.data}
+              loading={isFetching}
             />
           </div>
         </div>

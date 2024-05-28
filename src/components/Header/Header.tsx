@@ -69,14 +69,14 @@ const HeaderApp = () => {
           <button
             className="btn  py-2 text-rose-500 rounded hover:bg-rose-500 hover:text-white px-3"
             onClick={() => {
-              router.push("/auth/login");
+              router.push("/login");
             }}
           >
             <UserOutlined /> {t("login")}
           </button>
           <button
             onClick={() => {
-              router.push("/auth/register");
+              router.push("/register");
             }}
             className="btn shadow text-white rounded border px-2 py-2 bg-rose-500 ms-3 hover:bg-rose-400 sm:hover:last:translate-x-2"
           >

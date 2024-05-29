@@ -6,7 +6,9 @@ import { NextIntlClientProvider } from "next-intl";
 import ReduxProvider from "@/redux/Provider";
 import "react-toastify/dist/ReactToastify.css";
 import ReactQueryProvider from "@/react-query/ReactQueryProvider";
-
+import { ConfigProvider } from "antd";
+import vi from "antd/locale/vi_VN";
+import en from "antd/locale/en_US";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
@@ -19,7 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <NextNProgress />
       <ReactQueryProvider>
         <ReduxProvider>
-          <Component {...pageProps} />
+          <ConfigProvider locale={router.locale == "vi" ? vi : en}>
+            <Component {...pageProps} />
+          </ConfigProvider>
         </ReduxProvider>
       </ReactQueryProvider>
     </NextIntlClientProvider>

@@ -33,7 +33,10 @@
       "order":"Đặt hàng",
       "user":"Người dùng",
       "userprofile":"Thông tin cá nhân",
-      "Settings":"Thiết lập"
+      "Settings":"Thiết lập",
+      "neworder":"Đặt hàng",
+      "payment":"Thanh toán",
+      "paymenthistory":"Lịch sử thanh toán"
     },
     "general":{
       "fullname":"Họ tên",
@@ -57,11 +60,12 @@
       "chooseanuser":"Chọn một người dùng",
       "link":"Liên kết",
       "totalmoney":"Tổng tiền",
-      "fund":"Quỹ",
+      "fund":"Số dư",
       "isactive":"Đã kích hoạt",
       "quantity":"Số lượng",
       "status":"Trạng thái",
       "remains":"Còn lại"
+
     },
     "validation":{
       "required":"không được để trống!",

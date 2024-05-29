@@ -1,4 +1,4 @@
-import ButtonFormModal from "@/components/DashBoard/General/ButtonFormModal";
+import ButtonFormModal from "@/components/DashBoard/components/General/ButtonFormModal";
 import { Form, Input } from "antd";
 
 const About = () => {

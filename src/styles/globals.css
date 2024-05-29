@@ -155,18 +155,22 @@
     scrollbar-width: thin;
     scrollbar-color: #6394eb #edf2f7;
   }
-  
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 2px;
-  }
-  
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: #edf2f7;
-  }
-  
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #49a7f3;
-    border-radius: 4px;
-    border: 2px solid #edf2f7;
-  }
-  
+
+.scrollbar-thin::-webkit-scrollbar {
+width: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+background: #edf2f7;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+background-color: #49a7f3;
+border-radius: 4px;
+border: 2px solid #edf2f7;
+}
+
+.ant-form-item-required::before{
+    content: "" !important;
+}
+

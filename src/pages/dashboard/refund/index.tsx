@@ -6,6 +6,7 @@ import DashBoardFilter from "@/components/DashBoard/components/DashboardFilter";
 import PlatformUpdate from "@/components/DashBoard/components/Platform/UpdatePlatform";
 import TableAction from "@/components/DashBoard/components/TableAction";
 import ServicePage from "@/components/PageComponents/ServicePage";
+import { PAGE_SIZE } from "@/constants";
 import axiosClient from "@/pages/api/axiosClient";
 import { EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,23 +20,22 @@ import { ReactNode, useEffect, useState } from "react";
 import { text } from "stream/consumers";
 
 const Page = () => {
-  const { data, isPending, isError, mutate } = useMutation({
-    mutationFn: (iData) => {
-      return axiosClient.get("/refund-money/list?language=en", {
-        params: iData,
-      });
-    },
+  const [pageIndex, setPageIndex] = useState(1);
+
+  const offset = (pageIndex - 1) * PAGE_SIZE;
+  const limit = pageIndex * PAGE_SIZE;
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryFn: () =>
+      axiosClient.get("/refund-money/list?language=en", {
+        params: {
+          offset,
+          limit,
+        },
+      }),
+    queryKey: ["Refund", pageIndex],
+    placeholderData: (previousData) => previousData,
   });
-  const handleFetch = (params: any) => {
-    mutate(params);
-  };
-  useEffect(() => {
-    handleFetch({
-      keyword: "a",
-      limit: 10,
-      offset: 0,
-    });
-  }, []);
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode>(<></>);
@@ -53,7 +53,6 @@ const Page = () => {
       </Head>
       <ServicePage>
         <DashBoardFilter selectData={[]} search_placehoder={t("searchplh")} />
-        <p>{isPending ? "Loading..." : ""}</p>
         <Modal
           title={title}
           open={showModal}
@@ -75,18 +74,14 @@ const Page = () => {
           </Button>
         </div>
         <Table
+          loading={isFetching}
           onChange={(pagination: any) => {
             console.log(data?.data.total);
-
-            handleFetch({
-              offset:
-                pagination.current * pagination.pageSize - pagination.pageSize,
-              limit: pagination.current * pagination.pageSize,
-            });
+            setPageIndex(pagination.current);
           }}
           pagination={{
             total: data?.data.total,
-            pageSize: 10,
+            pageSize: PAGE_SIZE,
           }}
           dataSource={data?.data.data}
           columns={[
@@ -94,6 +89,9 @@ const Page = () => {
               title: "ID",
               dataIndex: "id",
               key: "id",
+              render: (text: any, record: any, index: any) => (
+                <>{pageIndex * 10 + (index + 1) - 10}</>
+              ),
             },
             {
               title: t("mailUser"),
@@ -131,10 +129,9 @@ const Page = () => {
               render: (text, record) => (
                 <>
                   <TableAction
-                    onDelete={() => {
-                      setTitle("Are you sure?");
-                      setModalContent(<ConfirmDelete />);
-                      setShowModal(true);
+                    deleteAPI={{
+                      deleteURL: "refund/delete",
+                      params: {},
                     }}
                     onEdit={() => {
                       setTitle("Update Refund");

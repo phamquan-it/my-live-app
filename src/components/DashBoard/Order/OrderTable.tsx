@@ -2,7 +2,7 @@ import UserData from "@/DataType/UseDataType";
 import UserType from "@/DataType/UserType";
 import { Input, Pagination, Select, Table } from "antd";
 import dayjs from "dayjs";
-import Role from "../../Role";
+import Role from "../../Client/Role";
 import { OrderType } from "./Entity/OrderType";
 import OrderData from "./Entity/OrderData";
 import TableAction from "../components/TableAction";

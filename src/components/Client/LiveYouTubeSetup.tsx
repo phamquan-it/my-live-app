@@ -1,6 +1,6 @@
 import Title from "antd/es/typography/Title";
 import { format } from "date-fns";
-import LiveFormConfig from "./PageComponents/LiveFormConfig";
+import LiveFormConfig from "../PageComponents/LiveFormConfig";
 import FilterForm from "./FilterForm";
 import LiveInfo from "./LiveInfo";
 import LiveListManager from "./LiveListManager";

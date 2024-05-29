@@ -173,17 +173,11 @@ export default function Index() {
                   render: (text: any, record: any) => {
                     return (
                       <TableAction
-                        showDetailBtn={false}
-                        onDelete={() => {
-                          setTitle("Are you sure?");
-                          setModalContent(
-                            <ConfirmDelete
-                              onCancel={hideModal}
-                              onAccept={() => {}}
-                            />
-                          );
-                          setShowModal(true);
+                        deleteAPI={{
+                          deleteURL: "",
+                          params: {},
                         }}
+                        showDetailBtn={false}
                         onEdit={() => {
                           setTitle("Update order");
                           setModalContent(<UpdateOrder />);

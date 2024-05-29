@@ -33,7 +33,11 @@
       "order":"Orders",
       "user":"Users",
       "userprofile":"User profile",
-      "Settings":"Settings"
+      "Settings":"Settings",
+      "neworder":"New order",
+      "funds":"Funds",
+      "payment":"Payments",
+      "paymenthistory":"Payment history"
     },
     "general":{
       "fullname":"Full name",
@@ -62,6 +66,7 @@
       "quantity":"Quantity",
       "status":"Status",
       "remains":"Remains"
+
     },
     "validation":{
       "required":"is required!",

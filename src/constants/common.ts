@@ -7,7 +7,7 @@ export const COOKIES_KEY = {
   LOCALE: 'locale',
 };
 
-export const PAGE_SIZE = 20;
+export const PAGE_SIZE = 10;
 
 export const MAX_FILE_RENDER = 1000;
 

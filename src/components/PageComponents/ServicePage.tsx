@@ -19,11 +19,11 @@ import {
   YoutubeOutlined,
 } from "@ant-design/icons";
 import { Button, Dropdown, Layout, Menu, MenuProps, theme } from "antd";
-import LiveYoutubeSetup from "../LiveYouTubeSetup";
+import LiveYoutubeSetup from "../Client/LiveYouTubeSetup";
 import { useRouter } from "next/router";
-import UserProfile from "../UserProfile";
-import TeamMember from "../TeamMember";
-import Setting from "../Setting";
+import UserProfile from "../Client/UserProfile";
+import TeamMember from "../Client/TeamMember";
+import Setting from "../Client/Setting";
 import { TbCategoryFilled } from "react-icons/tb";
 import {
   FaBuyNLarge,
@@ -33,9 +33,10 @@ import {
   FaVolumeOff,
 } from "react-icons/fa";
 import { useTranslations } from "next-intl";
-import LanguageChoose from "../LocaleChoose";
+import LanguageChoose from "../Client/LocaleChoose";
 import Title from "antd/es/typography/Title";
 import { deleteCookie } from "cookies-next";
+import { ToastContainer } from "react-toastify";
 
 const { Header, Sider, Content } = Layout;
 
@@ -51,23 +52,18 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
       label: t("home"),
       page: "/dashboard",
     },
-    {
-      key: "2",
-      icon: <HistoryOutlined />,
-      label: "Payment history",
-      page: "/dashboard/refund",
-    },
+
     {
       key: "3",
       icon: <FaListUl />,
       label: t("services"),
-      page: "/dashboard/refund",
+      page: "/dashboard/service",
     },
     {
       key: "4",
       icon: <FaMoneyBill />,
       label: "Cash flow",
-      page: "/dashboard/refund",
+      page: "/dashboard/cashflow",
     },
     {
       key: "5",
@@ -82,16 +78,28 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
       page: "/dashboard/refund",
     },
     {
+      key: "2",
+      icon: <HistoryOutlined />,
+      label: t("payment"),
+      page: "/dashboard/payment",
+    },
+    {
       key: "7",
       icon: <HistoryOutlined />,
-      label: "Payment history",
-      page: "/dashboard/refund",
+      label: t("paymenthistory"),
+      page: "/dashboard/payment/history",
+    },
+    {
+      key: "15",
+      icon: <CalendarFilled />,
+      label: t("platform"),
+      page: "/dashboard/platform",
     },
     {
       key: "8",
       icon: <CalendarFilled />,
-      label: "Cront",
-      page: "/dashboard/refund",
+      label: "Crond",
+      page: "/dashboard/crond",
     },
     {
       key: "9",
@@ -122,7 +130,7 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
       key: "13",
       icon: <FaVolumeOff />,
       label: "Voucher",
-      page: "/dashboard/log",
+      page: "/dashboard/voucher",
     },
     {
       key: "14",
@@ -167,6 +175,7 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
 
   return (
     <Layout style={{ height: "100vh" }} className="!bg-white">
+      <ToastContainer />
       <div
         className="bg-white h-screen "
         style={{ height: "100vh", overflowY: "auto", overflowX: "hidden" }}
@@ -196,10 +205,19 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
               </div>
             </div>
             <div className="mx-3 grid gap-2">
-              <Button type="primary" icon={<PlusCircleFilled />}>
-                New order
+              <Button
+                type="primary"
+                icon={<PlusCircleFilled />}
+                onClick={() => {
+                  router.push("/dashboard/order/new-order");
+                }}
+              >
+                {t("neworder")}
               </Button>
               <Button
+                onClick={() => {
+                  router.push("/dashboard/deposit");
+                }}
                 type="primary"
                 className="!bg-green-600"
                 icon={<PlusCircleFilled />}
@@ -223,7 +241,7 @@ const ServicePage: React.FC<ServicePageLayout> = ({ children }) => {
             items={items_menu}
           />
         </Sider>
-        <div className="grid">
+        <div className="grid pb-8">
           <Button
             className={`${!collapsed ? "!mx-3" : "!hidden"}`}
             onClick={() => {

@@ -1,23 +1,16 @@
 import ServicePage from "@/components/PageComponents/ServicePage";
-import Setting from "@/components/Client/Setting";
 import { GetStaticPropsContext } from "next";
-import Head from "next/head";
 
 const Page = () => {
   return (
     <>
-      <Head>
-        <title>Settings</title>
-        <link rel="icon" href="/logo.png" />
-      </Head>
       <ServicePage>
-        <Setting />
+        <h1>Cash flow</h1>
       </ServicePage>
     </>
   );
 };
 export default Page;
-
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {

@@ -67,6 +67,92 @@ export default function Index() {
   const onChange = (pagination: TablePaginationConfig) => {
     setPageIndex(pagination.current ?? 1);
   };
+
+  const columns = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      render: (text: string, record: any, index: number) => (
+        <>{pageIndex * 10 + (index + 1) - 10}</>
+      ),
+    },
+    {
+      title: t("link"),
+      dataIndex: "link",
+      key: "link",
+    },
+    {
+      title: t("quantity"),
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: t("status"),
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: t("remains"),
+      dataIndex: "remains",
+      key: "remains",
+    },
+    {
+      title: "OrderID",
+      dataIndex: "order_id",
+      key: "order_id",
+    },
+    {
+      title: "ServiceId",
+      dataIndex: "serviceId",
+      key: "serviceId",
+    },
+    {
+      title: t("createat"),
+      dataIndex: "create_date",
+      key: "create_date",
+      render: (text: string) => (
+        <>
+          {router.locale == "vi"
+            ? dayjs(text).format("DD/MM/YYYY")
+            : dayjs(text).format("YYYY/MM/DD")}
+        </>
+      ),
+    },
+    {
+      title: t("updateat"),
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (text: string) => (
+        <>
+          {router.locale == "vi"
+            ? dayjs(text).format("DD/MM/YYYY")
+            : dayjs(text).format("YYYY/MM/DD")}
+        </>
+      ),
+    },
+    {
+      title: t("action"),
+      dataIndex: "action",
+      key: "action",
+      render: (text: any, record: any) => {
+        return (
+          <TableAction
+            deleteAPI={{
+              deleteURL: "",
+              params: {},
+            }}
+            showDetailBtn={false}
+            onEdit={() => {
+              setTitle("Update order");
+              setModalContent(<UpdateOrder />);
+              setShowModal(true);
+            }}
+          />
+        );
+      },
+    },
+  ];
   return (
     <>
       <Head>
@@ -103,91 +189,7 @@ export default function Index() {
                 pageSize: 10,
                 total: data?.data.total,
               }}
-              columns={[
-                {
-                  title: "Id",
-                  dataIndex: "id",
-                  key: "id",
-                  render: (text, record, index) => (
-                    <>{pageIndex * 10 + (index + 1) - 10}</>
-                  ),
-                },
-                {
-                  title: t("link"),
-                  dataIndex: "link",
-                  key: "link",
-                },
-                {
-                  title: t("quantity"),
-                  dataIndex: "quantity",
-                  key: "quantity",
-                },
-                {
-                  title: t("status"),
-                  dataIndex: "status",
-                  key: "status",
-                },
-                {
-                  title: t("remains"),
-                  dataIndex: "remains",
-                  key: "remains",
-                },
-                {
-                  title: "OrderID",
-                  dataIndex: "order_id",
-                  key: "order_id",
-                },
-                {
-                  title: "ServiceId",
-                  dataIndex: "serviceId",
-                  key: "serviceId",
-                },
-                {
-                  title: t("createat"),
-                  dataIndex: "create_date",
-                  key: "create_date",
-                  render: (text) => (
-                    <>
-                      {router.locale == "vi"
-                        ? dayjs(text).format("DD/MM/YYYY")
-                        : dayjs(text).format("YYYY/MM/DD")}
-                    </>
-                  ),
-                },
-                {
-                  title: t("updateat"),
-                  dataIndex: "updatedAt",
-                  key: "updatedAt",
-                  render: (text) => (
-                    <>
-                      {router.locale == "vi"
-                        ? dayjs(text).format("DD/MM/YYYY")
-                        : dayjs(text).format("YYYY/MM/DD")}
-                    </>
-                  ),
-                },
-                {
-                  title: t("action"),
-                  dataIndex: "action",
-                  key: "action",
-                  render: (text: any, record: any) => {
-                    return (
-                      <TableAction
-                        deleteAPI={{
-                          deleteURL: "",
-                          params: {},
-                        }}
-                        showDetailBtn={false}
-                        onEdit={() => {
-                          setTitle("Update order");
-                          setModalContent(<UpdateOrder />);
-                          setShowModal(true);
-                        }}
-                      />
-                    );
-                  },
-                },
-              ]}
+              columns={columns}
               dataSource={data?.data.data}
               loading={isFetching}
             />

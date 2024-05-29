@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import axiosClient from "../api/axiosClient";
+import UserProfile from "@/components/Client/UserProfile";
 export const fetchUserInfo = async () => {
   const { data } = await axiosClient.get("/user/info", {
     params: { language: "en" },
@@ -30,6 +31,7 @@ const UserInfo = () => {
       <p>Role:{data.data.role.name}</p>
       <p>Id User: {data.data.id}</p>
       <p>Active: {data.data.isActive}</p>
+      <UserProfile />
     </div>
   );
 };

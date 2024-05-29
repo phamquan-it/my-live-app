@@ -4,6 +4,7 @@ import axiosClient from "../../api/axiosClient";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import Head from "next/head";
 import { GetStaticPropsContext } from "next";
+import UserProfile from "@/components/Client/UserProfile";
 export const fetchUserInfo = async () => {
   const { data } = await axiosClient.get("/user/info", {
     params: { language: "en" },
@@ -32,13 +33,13 @@ const UserInfo = () => {
       </Head>
       <ServicePage>
         <div className="container m-auto">
-          <h1>User Info</h1>
-          <p>FullName:{data.data.name}</p>
-          <p>Email:{data.data.email}</p>
-          <p>Funds:{data.data.funds}</p>
-          <p>Role:{data.data.role.name}</p>
-          <p>Id User: {data.data.id}</p>
-          <p>Active: {data.data.isActive}</p>
+          <UserProfile
+            active={data.data.isActive}
+            funds={data.data.funds}
+            name={data.data.name}
+            email={data.data.email}
+            role={data.data.role.name}
+          />
         </div>
       </ServicePage>
     </>

@@ -1,9 +1,8 @@
-import TableAction from "@/components/DashBoard/components/TableAction";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import { Table } from "antd";
 import { GetStaticPropsContext } from "next";
 
-const Page = () => {
+const History = () => {
   const dataSource = [
     {
       key: "1",
@@ -35,19 +34,6 @@ const Page = () => {
       dataIndex: "address",
       key: "address",
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      render: (text: string, record: any, index: number) => {
-        return (
-          <TableAction
-            deleteAPI={{ deleteURL: "", params: {} }}
-            deleteAlert="If you comfirm, you can't restore!"
-          />
-        );
-      },
-    },
   ];
   return (
     <>
@@ -57,11 +43,12 @@ const Page = () => {
     </>
   );
 };
-export default Page;
+export default History;
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
-      messages: (await import(`../../../../messages/${locale}.json`)).default,
+      messages: (await import(`../../../../../messages/${locale}.json`))
+        .default,
     },
   };
 }

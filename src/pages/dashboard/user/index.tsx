@@ -186,6 +186,10 @@ export default function Index() {
                           setModalContent(<UpdateUser />);
                           setShowModal(true);
                         }}
+                        deleteAPI={{
+                          deleteURL: "",
+                          params: {},
+                        }}
                       />
                     </>
                   );

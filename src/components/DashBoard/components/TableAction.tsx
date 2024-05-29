@@ -32,6 +32,19 @@ const TableAction: React.FC<TableActionProps> = ({
   const t = useTranslations("general");
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const deleteAction = () => {
+    axiosClient
+      .delete(deleteAPI.deleteURL, deleteAPI.params)
+      .then((response) => {
+        console.log(response);
+        toast.success("Deleted");
+      })
+      .catch((error) => {
+        console.log(error);
+        setShowModal(false);
+        toast.error("An error occured");
+      });
+  };
   return (
     <>
       <Modal
@@ -41,23 +54,7 @@ const TableAction: React.FC<TableActionProps> = ({
         footer={
           <>
             <Button onClick={() => setShowModal(false)}>{t("cancel")}</Button>
-            <Button
-              type="primary"
-              danger
-              onClick={() => {
-                axiosClient
-                  .delete(deleteAPI.deleteURL, deleteAPI.params)
-                  .then((response) => {
-                    console.log(response);
-                    toast.success("Deleted");
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                    setShowModal(false);
-                    toast.error("An error occured");
-                  });
-              }}
-            >
+            <Button type="primary" danger onClick={deleteAction}>
               {t("accept")}
             </Button>
           </>

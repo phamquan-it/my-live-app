@@ -31,7 +31,6 @@ const UserInfo = () => {
       <p>Role:{data.data.role.name}</p>
       <p>Id User: {data.data.id}</p>
       <p>Active: {data.data.isActive}</p>
-      <UserProfile />
     </div>
   );
 };

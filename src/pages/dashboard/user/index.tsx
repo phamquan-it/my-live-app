@@ -165,13 +165,6 @@ export default function Index() {
                 title: t("role"),
                 dataIndex: "role",
                 key: "role",
-                render: (text, record: UserType) => {
-                  return (
-                    <>
-                      <h1>{record.role.name}</h1>
-                    </>
-                  );
-                },
               },
               {
                 title: t("action"),

@@ -20,17 +20,62 @@ const History = () => {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "No.",
+      dataIndex: "i",
+      key: "i",
     },
     {
-      title: "Age",
+      title: "Account",
+      dataIndex: "account",
+      key: "account",
+    },
+    {
+      title: "User create",
       dataIndex: "age",
       key: "age",
     },
     {
-      title: "Address",
+      title: "Id",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Payment method",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Date",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Content",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Status",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Amount(USD)",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Rate",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Amount(VND)",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Action",
       dataIndex: "address",
       key: "address",
     },

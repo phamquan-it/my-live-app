@@ -13,12 +13,22 @@
       "pageTitle": "next-intl"
     },
     "Form": {
+      "rpassword":"Xác nhận mật khẩu",
+      "gotohomepage":"Đi tới trang chủ",
       "username": "Tên người dùng",
       "password": "Mật khẩu",
       "login":"Đăng nhập",
       "register":"Đăng ký",
       "forgot":"Quên mật khẩu?",
-      "fullname":"Họ tên"
+      "fullname":"Họ tên",
+      "requiredFullname":"Họ tên không được để trống",
+      "requiredEmail":"Email không được để trống!",
+      "email":"Email",
+      "requiredpassword":"Mật khẩu không được để trống!",
+      "confirmpassword":"Xác nhận nhận mật khẩu không được để trống!",
+      "confirmpasswordError":"Xác nhận mật khẩu không khớp!",
+      "success":"Thành công!",
+      "min5char":"Mật khẩu phải có tối thiểu 5 ký tự!"
     },
     "ErrorMessage":{
       "notfound":"Lỗi 404, Địa chỉ trang web này không tồn tại!"

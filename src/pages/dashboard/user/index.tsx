@@ -190,11 +190,11 @@ export default function Index() {
               },
             ]}
             pagination={{
-              position: ["bottomCenter"],
+              // position: ["bottomCenter"],
               total: data?.data.total,
               defaultCurrent: 1,
-              showSizeChanger: true,
-              showQuickJumper: true,
+              // showSizeChanger: true,
+              // showQuickJumper: true,
             }}
             onChange={(pagination: any, filter, sort) => {
               setPageIndex(pagination.current);

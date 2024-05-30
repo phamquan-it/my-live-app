@@ -69,11 +69,9 @@ const LoginForm = () => {
               </Title>
               <div className="px-2">
                 <Form.Item
-                  label={t("username")}
+                  label={t("email")}
                   name="email"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
+                  rules={[{ required: true, message: t("requiredEmail") }]}
                 >
                   <Input />
                 </Form.Item>
@@ -82,7 +80,7 @@ const LoginForm = () => {
                   label={t("password")}
                   name="password"
                   rules={[
-                    { required: true, message: "Please input your password!" },
+                    { required: true, message: t("requiredpassword") },
                     {
                       min: 5,
                       message: "Password should have at least 5 characters",
@@ -91,23 +89,26 @@ const LoginForm = () => {
                 >
                   <Input.Password />
                 </Form.Item>
-                <Button
-                  type="link"
-                  style={{ color: "purple" }}
-                  onClick={() => {
-                    // Handle forgot password
-                  }}
-                >
-                  {t("forgot")}
-                </Button>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
+
+                <Form.Item className="!mt-3">
+                  <Button type="primary" block htmlType="submit">
                     {t("login")}
                   </Button>{" "}
-                  <Button htmlType="submit">{t("register")}</Button>
+                  <p className="text-center">
+                    Don't have an account?{" "}
+                    <Button
+                      className="!px-0"
+                      type="link"
+                      onClick={() => {
+                        router.push("/register");
+                      }}
+                    >
+                      {t("register")}
+                    </Button>
+                  </p>
                 </Form.Item>
                 <Form.Item label="" name="">
-                  <Link href={"/"}>Goto home page</Link>
+                  <Link href={"/"}>{t("gotohomepage")}</Link>
                 </Form.Item>
               </div>
             </Form>

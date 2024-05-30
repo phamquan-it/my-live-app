@@ -1,16 +1,14 @@
-import { fundApi } from "@/API/fundApi";
 import CreateNewCategory from "@/components/DashBoard/Category/CreateNewCategory";
 import UpdateCateggory from "@/components/DashBoard/Category/UpdateCategory";
-import ConfirmDelete from "@/components/DashBoard/components/ConfirmModalDelete";
-import DashBoardFilter from "@/components/DashBoard/components/DashboardFilter";
 import TableAction from "@/components/DashBoard/components/TableAction";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import { PAGE_SIZE } from "@/constants";
 import axiosClient from "@/pages/api/axiosClient";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import _ from "lodash";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Image, Modal, Spin, Table } from "antd";
+import { Button, Image, Input, Modal, Spin, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import Title from "antd/es/typography/Title";
 import dayjs from "dayjs";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
@@ -23,27 +21,6 @@ import { text } from "stream/consumers";
 const Page = () => {
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
-
-  // const { data, isPending, isError, mutate } = useMutation({
-  //   mutationFn: (iData) => {
-  //     return axiosClient.get("/categories/list?language=en", {
-  //       params: iData,
-  //     });
-  //   },
-  //   onSuccess: () => {
-  //     console.log(data);
-  //   },
-  // });
-  // const handleFetch = (params: any) => {
-  //   mutate(params);
-  // };
-  // useEffect(() => {
-  //   handleFetch({
-  //     keyword: "",
-  //     limit: 10,
-  //     offset: 0,
-  //   });
-  // }, []);
 
   const [pageIndex, setPageIndex] = useState(1);
 
@@ -60,7 +37,7 @@ const Page = () => {
           keyword,
         },
       }),
-    queryKey: ["", pageIndex, keyword],
+    queryKey: ["category", pageIndex, keyword],
     placeholderData: (previousData) => previousData,
   });
   const [modalContent, setModalContent] = useState<ReactNode>(<></>);
@@ -75,6 +52,7 @@ const Page = () => {
       title: "No.",
       dataIndex: "id",
       key: "id",
+      width: "5%",
       render: (text, record, index) => <>{pageIndex * 10 + (index + 1) - 10}</>,
     },
     {
@@ -91,6 +69,7 @@ const Page = () => {
     {
       title: t("createat"),
       dataIndex: "createdAt",
+      width: "100px",
       key: "createdAt",
       render: (text) => (
         <>
@@ -104,25 +83,31 @@ const Page = () => {
       title: t("action"),
       dataIndex: "action",
       key: "action",
+      width: "150px",
+      align: "center",
       render: (text, record) => (
         <>
           <ToastContainer />
-          <TableAction
-            onEdit={() => {
-              setTitle(`Edit`);
-              setOpenModal(true);
-              setModalContent(<UpdateCateggory />);
-            }}
-            deleteAPI={{
-              deleteURL: "",
-              params: {},
-            }}
-          />
+          <div className="flex justify-center">
+            <TableAction
+              onEdit={() => {
+                setTitle(`Edit`);
+                setOpenModal(true);
+                setModalContent(<UpdateCateggory />);
+              }}
+              deleteAPI={{
+                deleteURL: "",
+                params: {},
+              }}
+            />
+          </div>
         </>
       ),
     },
   ];
-
+  let searchCategory = _.debounce((e) => {
+    setKeyword(e.target.value);
+  }, 300);
   return (
     <>
       <Head>
@@ -140,18 +125,16 @@ const Page = () => {
         >
           {modalContent}
         </Modal>
-        <DashBoardFilter
-          search_placehoder="Search..."
-          selectData={[{ children: <>123</>, key: "", value: "1" }]}
-          onSearchChange={(e) => {
-            console.log(e.target.value);
-            setKeyword(e.target.value);
-          }}
-          onSelectChange={(value) => {
-            console.log(value);
-          }}
-        />
-        <div className="py-3">
+        <div className="my-4 py-5">
+          <Title className="!text-gray-700 text-center">Category</Title>
+        </div>
+        <div className="flex justify-between my-2">
+          <Input
+            placeholder="Enter search..."
+            style={{ width: "230px" }}
+            onChange={searchCategory}
+          />
+
           <Button
             type="primary"
             onClick={() => {
@@ -160,10 +143,12 @@ const Page = () => {
               setModalContent(<CreateNewCategory />);
             }}
           >
-            Create new category
+            Create
           </Button>
         </div>
+
         <Table
+          tableLayout="auto"
           loading={isFetching}
           onChange={(pagination: any) => {
             console.log(pagination);

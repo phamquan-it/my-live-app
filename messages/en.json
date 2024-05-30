@@ -13,12 +13,22 @@
       "pageTitle": "next-intl"
     },
     "Form": {
+      "rpassword":"Confirm password",
+      "gotohomepage":"Go to home page",
       "username": "Username",
       "password": "Password",
       "login":"Login",
       "register":"Register",
       "forgot":"Forgot password?",
-      "fullname":"Full name"
+      "fullname":"Full name",
+      "requiredFullname":"Fullname is required!",
+      "requiredEmail":"Please enter your email!",
+      "email":"Email",
+      "requiredpassword":"Password is required!",
+      "confirmpassword":"Confirm password is required!",
+      "confirmpasswordError":"Confirm password is not match!",
+      "success":"Success!",
+      "min5char":"Password should have at least 5 characters"
     },
     "ErrorMessage":{
       "notfound":"404 not found!"

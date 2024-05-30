@@ -7,10 +7,10 @@ import {
   EditOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { Button, Modal } from "antd";
+import { Button, Modal, Tooltip } from "antd";
 import { error } from "console";
 import { useTranslations } from "next-intl";
-import React, { ReactNode, useState, useTransition } from "react";
+import React, { ReactNode, useMemo, useState, useTransition } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 interface TableActionProps {
@@ -45,6 +45,21 @@ const TableAction: React.FC<TableActionProps> = ({
         toast.error("An error occured");
       });
   };
+  const [arrow, setArrow] = useState("Show");
+
+  const mergedArrow = useMemo(() => {
+    if (arrow === "Hide") {
+      return false;
+    }
+
+    if (arrow === "Show") {
+      return true;
+    }
+
+    return {
+      pointAtCenter: true,
+    };
+  }, [arrow]);
   return (
     <>
       <Modal
@@ -72,27 +87,31 @@ const TableAction: React.FC<TableActionProps> = ({
       </Modal>
 
       <div className="flex gap-1">
-        <Button
-          onClick={() => {
-            setShowEditModal(true);
-          }}
-          className="!px-2 !border-blue-600"
-        >
-          <span className="text-blue-600">
-            <EditFilled />
-          </span>
-        </Button>
+        <Tooltip placement="top" title={"Edit"} arrow={mergedArrow}>
+          <Button
+            onClick={() => {
+              setShowEditModal(true);
+            }}
+            className="!px-2 !border-blue-600"
+          >
+            <span className="text-blue-600">
+              <EditFilled />
+            </span>
+          </Button>
+        </Tooltip>
         <Button className={showDetailBtn ? "" : "!hidden"} onClick={onDetail}>
           <EyeOutlined />
         </Button>
-        <Button
-          onClick={() => setShowModal(true)}
-          className="!px-2 !border-red-600"
-        >
-          <span className="text-rose-600">
-            <DeleteFilled />
-          </span>
-        </Button>
+        <Tooltip placement="top" title={"Delete"} arrow={mergedArrow}>
+          <Button
+            onClick={() => setShowModal(true)}
+            className="!px-2 !border-red-600"
+          >
+            <span className="text-rose-600">
+              <DeleteFilled />
+            </span>
+          </Button>
+        </Tooltip>
       </div>
     </>
   );

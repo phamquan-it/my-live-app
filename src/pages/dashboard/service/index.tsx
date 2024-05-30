@@ -61,7 +61,10 @@ export default function Index() {
       key: "id",
       render: (text: string, record: any, index: number) => {
         record.key = index;
-        return <>{pageIndex * 10 + (index + 1) - 10}</>;
+        if (record.id != undefined) index--;
+        return (
+          <>{record.id != undefined ? pageIndex * 10 + (index + 1) - 10 : ""}</>
+        );
       },
     },
     {
@@ -86,12 +89,15 @@ export default function Index() {
       title: "min",
       dataIndex: "min",
       key: "min",
+      align: "right",
       render: (text: string, record: any) => (
         <>
-          {format.number(parseFloat(record.service.min), {
-            style: "currency",
-            currency: "USD",
-          })}
+          {!Number.isNaN(record.service.min)
+            ? ""
+            : format.number(parseFloat(record.service.min), {
+                style: "currency",
+                currency: "USD",
+              })}
         </>
       ),
     },
@@ -100,15 +106,21 @@ export default function Index() {
       dataIndex: "max",
       key: "max",
       render: (text: string, record: any) => <>{record.service.max}</>,
+      align: "right",
     },
     {
       title: "level",
       dataIndex: "level",
+      align: "center",
       key: "level",
       render: (tex: string, record: any) => (
         <>
           {record.service.level}
-          <StarFilled className="!text-orange-300" />
+          {record.service.level != undefined ? (
+            <StarFilled className="!text-orange-300" />
+          ) : (
+            ""
+          )}
         </>
       ),
     },
@@ -116,20 +128,28 @@ export default function Index() {
       title: "rate_config",
       dataIndex: "rate_config",
       key: "rate_config",
+      align: "right",
       render: (text: string, record: any) => <>{record.service.rate_config}</>,
     },
     {
       title: "Action",
       dataIndex: "action",
       key: "Action",
+      align: "center",
       render: (text: string, record: any) => (
         <>
-          <TableAction
-            deleteAPI={{
-              deleteURL: "",
-              params: {},
-            }}
-          />
+          <div className="flex justify-center">
+            {record.service.level != undefined ? (
+              <TableAction
+                deleteAPI={{
+                  deleteURL: "",
+                  params: {},
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </>
       ),
     },

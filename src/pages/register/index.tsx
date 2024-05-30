@@ -6,6 +6,8 @@ import { RegisterPayload, authApi } from "@/API/authApi";
 import { ToastContainer, toast } from "react-toastify";
 import { error } from "console";
 import { useRouter } from "next/router";
+import Title from "antd/es/typography/Title";
+import Link from "next/link";
 
 const RegiterForm = () => {
   const t = useTranslations("Form");
@@ -16,10 +18,14 @@ const RegiterForm = () => {
   };
 
   const onFinish = async (values: RegisterPayload) => {
+    if (values.confirmpassword != values.password) {
+      toast.error(t("confirmpasswordError"));
+      return;
+    }
     await authApi
       .register(values)
       .then((response: any) => {
-        toast.success("Successfully", {
+        toast.success("Success", {
           onClose: () => {
             authApi
               .login({ email: values.email, password: values.password })
@@ -44,8 +50,10 @@ const RegiterForm = () => {
         style={{ height: "100vh" }}
       >
         <ToastContainer />
-        <div className="w-full">
-          <h1 className="text-center">{t("register")}</h1>
+        <div className="w-full shadow border rounded px-5 py-5">
+          <Title level={3} className="text-center">
+            {t("register")}
+          </Title>
           <Form
             className="w-full"
             name="basic"
@@ -61,11 +69,9 @@ const RegiterForm = () => {
               <Input />
             </Form.Item>
             <Form.Item
-              label={t("username")}
+              label={t("email")}
               name="email"
-              rules={[
-                { required: true, message: "Please input your username!" },
-              ]}
+              rules={[{ required: true, message: t("requiredEmail") }]}
             >
               <Input />
             </Form.Item>
@@ -73,10 +79,23 @@ const RegiterForm = () => {
               label={t("password")}
               name="password"
               rules={[
-                { required: true, message: "Please input your password!" },
+                { required: true, message: t("requiredpassword") },
                 {
-                  min: 8,
-                  message: "Password should have at least 8 characters",
+                  min: 5,
+                  message: "Password should have at least 5 characters",
+                },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item
+              label={t("rpassword")}
+              name="confirmpassword"
+              rules={[
+                { required: true, message: t("confirmpassword") },
+                {
+                  min: 5,
+                  message: "Password should have at least 5 characters",
                 },
               ]}
             >
@@ -84,9 +103,20 @@ const RegiterForm = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                {t("register")}
-              </Button>
+              <div className="pb-3 flex gap-2">
+                <Button type="primary" htmlType="submit">
+                  {t("register")}
+                </Button>
+                <Button
+                  type="default"
+                  onClick={() => {
+                    router.push("/login");
+                  }}
+                >
+                  {t("login")}
+                </Button>
+              </div>
+              <Link href={"/"}>{t("gotohomepage")}</Link>
             </Form.Item>
           </Form>
         </div>

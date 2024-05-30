@@ -7,7 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { error } from "console";
 import { OrderType } from "@/components/DashBoard/Order/Entity/OrderType";
 import OrderData from "@/components/DashBoard/Order/Entity/OrderData";
-import { Button, Modal, Table, TablePaginationConfig } from "antd";
+import { Button, Modal, Switch, Table, TablePaginationConfig } from "antd";
 import axiosClient from "@/pages/api/axiosClient";
 import ServicePage from "@/components/PageComponents/ServicePage";
 import TableAction from "@/components/DashBoard/components/TableAction";
@@ -21,6 +21,7 @@ import { useTranslations } from "next-intl";
 import { text } from "stream/consumers";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
 const PAGE_SIZE = 10;
 const QUERY_KEY = "/order/list";
@@ -68,7 +69,7 @@ export default function Index() {
     setPageIndex(pagination.current ?? 1);
   };
 
-  const columns = [
+  const columns: any[] = [
     {
       title: "Id",
       dataIndex: "id",
@@ -91,6 +92,17 @@ export default function Index() {
       title: t("status"),
       dataIndex: "status",
       key: "status",
+      render: (text: string) => {
+        return (
+          <>
+            <Switch
+              checkedChildren={<CheckOutlined />}
+              unCheckedChildren={<CloseOutlined />}
+              defaultChecked={text != "Canceled"}
+            />
+          </>
+        );
+      },
     },
     {
       title: t("remains"),
@@ -135,20 +147,23 @@ export default function Index() {
       title: t("action"),
       dataIndex: "action",
       key: "action",
+      align: "center",
       render: (text: any, record: any) => {
         return (
-          <TableAction
-            deleteAPI={{
-              deleteURL: "",
-              params: {},
-            }}
-            showDetailBtn={false}
-            onEdit={() => {
-              setTitle("Update order");
-              setModalContent(<UpdateOrder />);
-              setShowModal(true);
-            }}
-          />
+          <div className="flex justify-center">
+            <TableAction
+              deleteAPI={{
+                deleteURL: "",
+                params: {},
+              }}
+              showDetailBtn={false}
+              onEdit={() => {
+                setTitle("Update order");
+                setModalContent(<UpdateOrder />);
+                setShowModal(true);
+              }}
+            />
+          </div>
         );
       },
     },
@@ -162,7 +177,6 @@ export default function Index() {
       <ServicePage>
         <div className="">
           <div>
-            <DashBoardFilter selectData={[]} search_placehoder="Search..." />
             <Modal
               footer={null}
               title={title}
@@ -173,6 +187,8 @@ export default function Index() {
             >
               <CreateOrder />
             </Modal>
+            <DashBoardFilter selectData={[]} search_placehoder="Search..." />
+
             <Button
               onClick={() => {
                 setTitle("Create new order");

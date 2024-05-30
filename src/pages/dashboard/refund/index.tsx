@@ -126,19 +126,23 @@ const Page = () => {
               title: t("action"),
               dataIndex: "action",
               key: "action",
+              align: "center",
+              width: "110px",
               render: (text, record) => (
                 <>
-                  <TableAction
-                    deleteAPI={{
-                      deleteURL: "refund/delete",
-                      params: {},
-                    }}
-                    onEdit={() => {
-                      setTitle("Update Refund");
-                      setModalContent(<UpdateRefund />);
-                      setShowModal(true);
-                    }}
-                  />
+                  <div className="flex justify-center">
+                    <TableAction
+                      deleteAPI={{
+                        deleteURL: "refund/delete",
+                        params: {},
+                      }}
+                      onEdit={() => {
+                        setTitle("Update Refund");
+                        setModalContent(<UpdateRefund />);
+                        setShowModal(true);
+                      }}
+                    />
+                  </div>
                 </>
               ),
             },

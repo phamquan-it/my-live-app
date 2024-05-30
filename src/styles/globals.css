@@ -173,4 +173,17 @@ border: 2px solid #edf2f7;
 .ant-form-item-required::before{
     content: "" !important;
 }
+.ant-form-item-required::after{
+    content: "*" !important;
+    width: 20px !important;
+    display: block !important;
+    color: red;
+    font-weight: bold;
+}
+.ant-form-item-required{
+    font-weight: 500;
+}
 
+.ant-form-vertical .ant-form-item-label >label::after, .ant-col-24.ant-form-item-label >label::after, .ant-col-xl-24.ant-form-item-label >label::after{
+    visibility: visible !important;
+}

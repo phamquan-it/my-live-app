@@ -90,7 +90,7 @@ const User: React.FC<OrderData> = ({ data, total, onChange }) => {
       key: "action",
       render: () => (
         <>
-          <TableAction />
+          <TableAction deleteAPI={{ deleteURL: "", params: {} }} />
         </>
       ),
     },

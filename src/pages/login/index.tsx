@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Carousel } from "antd";
+import { Form, Input, Button, Carousel, Image } from "antd";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import Title from "antd/es/typography/Title";
@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import FormLayout from "@/components/Client/FormLayout";
 
 const ubuntu = Ubuntu({
   weight: "400",
@@ -50,71 +51,63 @@ const LoginForm = () => {
   }
   return (
     <>
-      <div
-        className={`w-1/3 m-auto flex items-center ${ubuntu.className}`}
-        style={{ height: "100vh" }}
-      >
-        <ToastContainer />
-        <div className="w-full border rounded shadow">
-          <div className="px-3 py-4">
-            <Form
-              className="w-full py-5 pe-3"
-              name="basic"
-              initialValues={{ remember: true }}
-              {...layout}
-              onFinish={onFinish}
+      <FormLayout>
+        <Form
+          className="w-full py-5 pe-3"
+          name="basic"
+          initialValues={{ remember: true }}
+          {...layout}
+          onFinish={onFinish}
+        >
+          <Title level={3} className="text-center">
+            {t("login")}
+          </Title>
+          <div className="px-2">
+            <Form.Item
+              label={t("email")}
+              name="email"
+              rules={[{ required: true, message: t("requiredEmail") }]}
             >
-              <Title level={3} className="text-center">
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label={t("password")}
+              name="password"
+              rules={[
+                { required: true, message: t("requiredpassword") },
+                {
+                  min: 5,
+                  message: "Password should have at least 5 characters",
+                },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+
+            <Form.Item className="!mt-3">
+              <Button type="primary" block htmlType="submit">
                 {t("login")}
-              </Title>
-              <div className="px-2">
-                <Form.Item
-                  label={t("email")}
-                  name="email"
-                  rules={[{ required: true, message: t("requiredEmail") }]}
+              </Button>{" "}
+              <p className="text-center">
+                Don't have an account?{" "}
+                <Button
+                  className="!px-0"
+                  type="link"
+                  onClick={() => {
+                    router.push("/register");
+                  }}
                 >
-                  <Input />
-                </Form.Item>
-
-                <Form.Item
-                  label={t("password")}
-                  name="password"
-                  rules={[
-                    { required: true, message: t("requiredpassword") },
-                    {
-                      min: 5,
-                      message: "Password should have at least 5 characters",
-                    },
-                  ]}
-                >
-                  <Input.Password />
-                </Form.Item>
-
-                <Form.Item className="!mt-3">
-                  <Button type="primary" block htmlType="submit">
-                    {t("login")}
-                  </Button>{" "}
-                  <p className="text-center">
-                    Don't have an account?{" "}
-                    <Button
-                      className="!px-0"
-                      type="link"
-                      onClick={() => {
-                        router.push("/register");
-                      }}
-                    >
-                      {t("register")}
-                    </Button>
-                  </p>
-                </Form.Item>
-                <Form.Item label="" name="">
-                  <Link href={"/"}>{t("gotohomepage")}</Link>
-                </Form.Item>
-              </div>
-            </Form>
+                  {t("register")}
+                </Button>
+              </p>
+            </Form.Item>
+            <Form.Item label="" name="">
+              <Link href={"/"}>{t("gotohomepage")}</Link>
+            </Form.Item>
           </div>
-        </div>
-      </div>
+        </Form>
+      </FormLayout>
     </>
   );
 };

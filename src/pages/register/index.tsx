@@ -8,6 +8,7 @@ import { error } from "console";
 import { useRouter } from "next/router";
 import Title from "antd/es/typography/Title";
 import Link from "next/link";
+import FormLayout from "@/components/Client/FormLayout";
 
 const RegiterForm = () => {
   const t = useTranslations("Form");
@@ -45,12 +46,9 @@ const RegiterForm = () => {
   };
   return (
     <>
-      <div
-        className="w-1/3 m-auto flex items-center"
-        style={{ height: "100vh" }}
-      >
+      <FormLayout>
         <ToastContainer />
-        <div className="w-full shadow border rounded px-5 py-5">
+        <div className="w-fullrounded px-5 py-5">
           <Title level={3} className="text-center">
             {t("register")}
           </Title>
@@ -120,7 +118,7 @@ const RegiterForm = () => {
             </Form.Item>
           </Form>
         </div>
-      </div>
+      </FormLayout>
     </>
   );
 };

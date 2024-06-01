@@ -1,39 +1,88 @@
-import { GetStaticPropsContext } from "next";
-import { useTranslations } from "next-intl";
-
-import { useRouter } from "next/router";
-import Home from "@/components/PageComponents/HomePage";
-import { Button, Image, Layout, Table, TableColumnsType } from "antd";
-import { Header, Content, Footer } from "antd/lib/layout/layout";
-import Sider from "antd/es/layout/Sider";
-import LanguageChoose from "@/components/Client/LocaleChoose";
-import Title from "antd/lib/typography/Title";
+import type {
+  InferGetStaticPropsType,
+  GetStaticProps,
+  GetStaticPropsContext,
+} from "next";
 import { getListServicePublic } from "@/API/sercviceApi";
 import { useEffect, useState } from "react";
+import { Button, Image, Layout, Table, TableColumnsType } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import { StarFilled } from "@ant-design/icons";
-import TextArea from "antd/lib/input/TextArea";
+import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
+import { Footer, Header } from "antd/es/layout/layout";
+import LanguageChoose from "@/components/Client/LocaleChoose";
+import { Content } from "antd/lib/layout/layout";
+import Title from "antd/es/typography/Title";
 import IndexFilter from "@/components/Client/IndexFilter";
-export default function Index() {
-  const [locale, setLocale] = useState("vi");
-  const router = useRouter();
-  const t = useTranslations("Index");
-  interface DataType {
-    key: React.Key;
-    id: number;
-    icon: string;
-    name: string;
-    min: number;
-    max: string;
-    description: string;
-    level: number;
-    rate_config: string;
-  }
 
-  const columns: TableColumnsType<DataType> = [
+type Repo = {
+  message: string;
+  total: number;
+  data: any[];
+};
+
+export const getStaticProps = (async ({ locale }: GetStaticPropsContext) => {
+  const res = await getListServicePublic({
+    language: "en",
+    platformId: 1,
+    categoriesId: 14,
+  });
+  const repo = await res.data;
+  return {
+    props: {
+      repo,
+      messages: (await import(`../../messages/${locale}.json`)).default,
+    },
+  };
+}) satisfies GetStaticProps<{
+  repo: Repo;
+}>;
+interface serviceDatatype {
+  id: number;
+  name: string;
+  icon: string;
+  location: number;
+  createAt: string;
+  platformId: string;
+  serviceCategoryId: number;
+  serviceServiceId: number;
+  categoriesId: number;
+  serviceName: string;
+  servicetype: string;
+  servicemin: string;
+  servicemax: string;
+  servicedripfeed: string;
+  servicerefill: string;
+  servicecancel: string;
+  servicelevel: number;
+  servicedescription: string;
+  servicerate_config: number;
+}
+export default function Page({
+  repo,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [service, setService] = useState(repo);
+  const [serviceDataTransformed, setServiceDataTransformed] = useState<
+    serviceDatatype[]
+  >([]);
+  const fetchListData = () => {
+    const results: serviceDatatype[] = [];
+    service.data.map((item: any) => {
+      transformData(item).map((service: any) => {
+        results.push(service);
+        setServiceDataTransformed(results);
+      });
+    });
+  };
+  useEffect(() => {
+    fetchListData();
+  }, [service]);
+  const columns: TableColumnsType<serviceDatatype> = [
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "serviceName",
+      key: "serviceName",
       render: (text, record, index) => (
         <div className="flex items-center gap-1">
           {!record.icon ? (
@@ -47,8 +96,8 @@ export default function Index() {
     },
     {
       title: "Level",
-      dataIndex: "level",
-      key: "level",
+      dataIndex: "servicelevel",
+      key: "servicelevel",
       render: (text) => (
         <>
           <div className="flex items-center">
@@ -64,12 +113,12 @@ export default function Index() {
         </>
       ),
     },
-    { title: "Min", dataIndex: "min", key: "min" },
-    { title: "Max", dataIndex: "max", key: "max" },
+    { title: "Min", dataIndex: "servicemin", key: "servicemin" },
+    { title: "Max", dataIndex: "servicemax", key: "servicemax" },
     {
       title: "",
-      dataIndex: "level",
-      key: "level",
+      dataIndex: "servicelevel",
+      key: "servicelevel",
       render: (text, record, index) => (
         <>
           {!text ? (
@@ -83,45 +132,9 @@ export default function Index() {
       ),
     },
   ];
-  const [data, setData] = useState<DataType[]>([]);
-  const fetchData = () => {
-    getListServicePublic({
-      language: router.locale,
-      platformId: 1,
-    }).then((response) => {
-      const results: any[] = [];
-      response.data.data.map((category: any) => {
-        results.push(category);
-        category.serviceCategories.map((service: any) => {
-          const serviceData: DataType = {
-            key: service.id,
-            id: service.id,
-            name:
-              router.locale == "en"
-                ? service.service.name
-                : service.service.name_vi,
-            icon: "",
-            min: service.service.min,
-            max: service.service.max,
-            description:
-              router.locale == "en"
-                ? service.service.description_en
-                : service.service.description_vi,
-            level: service.service.level,
-            rate_config: service.service.rate_config,
-          };
-          console.log(service);
-
-          results.push(serviceData);
-          setData(results);
-        });
-      });
-    });
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const [pageSize, setPageSize] = useState(20);
+  const [locale, setLocale] = useState("vi");
+  const router = useRouter();
+  const t = useTranslations("Index");
   return (
     <div className="relative bg-slate-50">
       {/* <Home/> */}
@@ -140,7 +153,7 @@ export default function Index() {
                   onChange={(value: string) => {
                     router.push("/", "", { locale: value }).then(() => {
                       router.locale = router.locale == "en" ? "vi" : "en";
-                      fetchData();
+                      // fetchData();
                     });
                   }}
                 />
@@ -178,7 +191,7 @@ export default function Index() {
                     <div className="px-5 py-2">
                       <TextArea
                         className="!bg-transparent"
-                        value={record.description}
+                        // value={record.description}
                         autoSize
                         readOnly
                       />
@@ -187,13 +200,13 @@ export default function Index() {
                 ),
                 rowExpandable: (record) => record.icon == "",
               }}
-              dataSource={data}
+              dataSource={serviceDataTransformed}
               pagination={{
-                pageSize: pageSize,
+                // pageSize: pageSize,
                 position: ["bottomCenter"],
               }}
               onChange={(pagination: any) => {
-                setPageSize(pagination.pageSize);
+                // setPageSize(pagination.pageSize);
               }}
             />
           </Content>
@@ -203,11 +216,35 @@ export default function Index() {
     </div>
   );
 }
-
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      messages: (await import(`../../messages/${locale}.json`)).default,
-    },
-  };
-}
+const transformData = (input: any) => {
+  const {
+    id: id,
+    name: name,
+    icon: icon,
+    location: location,
+    createdAt: createAt,
+    platformId: platformId,
+    serviceCategories,
+  } = input;
+  return serviceCategories.map((serviceCategory: any) => ({
+    id,
+    name,
+    icon,
+    location,
+    createAt,
+    platformId,
+    serviceCategoryId: serviceCategory.id,
+    serviceServiceId: serviceCategory.serviceId,
+    categoriesId: serviceCategory.categoriesId,
+    serviceName: serviceCategory.service.name,
+    servicetype: serviceCategory.service.type,
+    servicemin: serviceCategory.service.min,
+    servicemax: serviceCategory.service.max,
+    servicedripfeed: serviceCategory.service.dripfeed,
+    servicerefill: serviceCategory.service.refill,
+    servicecancel: serviceCategory.service.cancel,
+    servicelevel: serviceCategory.service.level,
+    servicedescription: serviceCategory.service.description_en,
+    servicerate_config: serviceCategory.service.rate_config,
+  }));
+};

@@ -11,6 +11,7 @@ export function middleware(req:NextRequest){
         console.log(decoded.role==="admin");
         //is validtoken
         if (decoded.exp * 1000 < Date.now()) {
+            if(req.nextUrl.pathname !=="/login" && decoded.role ==="admin")
             return NextResponse.redirect(new URL("/login", req.url))
         }
         if(decoded.role == "admin"){
